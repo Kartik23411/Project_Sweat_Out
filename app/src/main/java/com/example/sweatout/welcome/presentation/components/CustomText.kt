@@ -11,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.sweatout.R
 
 @Composable
 fun CustomHeadlineText(
@@ -20,9 +19,24 @@ fun CustomHeadlineText(
 ) {
     Text(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 32.dp),
+                .fillMaxWidth()
+                .padding(top = 32.dp),
         text = stringResource(textId),
         style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center),
         color = MaterialTheme.colorScheme.onSurface)
+}
+
+@Composable
+fun CustomAboutText(
+    modifier: Modifier = Modifier,
+    @StringRes textId: Int
+) {
+    Text(
+        modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp, vertical = 8.dp),
+        text = stringResource(textId),
+        style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f)
+    )
 }

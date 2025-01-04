@@ -1,10 +1,9 @@
-package com.example.sweatout.welcome.presentation
+package com.example.sweatout.welcome.presentation.age_height_selection
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,13 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.sweatout.R
-import com.example.sweatout.welcome.presentation.components.FWheelPickerFocusVertical
+import com.example.sweatout.welcome.presentation.age_height_selection.components.Age_HeightPicker
+import com.example.sweatout.welcome.presentation.components.CustomAboutText
+import com.example.sweatout.welcome.presentation.components.CustomHeadlineText
 import com.example.sweatout.welcome.presentation.components.MyAppButton
-import com.example.sweatout.welcome.presentation.components.VerticalWheelPicker
 import com.example.sweatout.welcome.presentation.components.noRippleClickable
 
 @Composable
@@ -34,30 +32,13 @@ fun HeightSelectionScreen(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp),
-            text = stringResource(R.string.height_selection_screen_headline),
-            style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center),
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp, vertical = 8.dp),
-            text = stringResource(R.string.height_selection_screen_about_text),
-            style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f)
-        )
+        CustomHeadlineText(textId = R.string.height_selection_screen_headline)
+        CustomAboutText(textId = R.string.height_selection_screen_about_text)
 
-        VerticalWheelPicker(
+        Age_HeightPicker(
             modifier = Modifier.weight(.9f),
             count = 280,
             initialIndex = 120,
-            focus = {
-                FWheelPickerFocusVertical()
-            }
         ) { index ->
             Text(
                 index.toString(),
@@ -65,7 +46,7 @@ fun HeightSelectionScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
-
+        // buttons row
         Row(
             modifier = Modifier
                     .fillMaxWidth()
@@ -74,24 +55,22 @@ fun HeightSelectionScreen(
         ) {
             MyAppButton(
                 onClick = { onCancelClick() }, /*TODO() Add the clicking functionality*/
-                buttonText = "Back",
+                buttonText = stringResource(R.string.back),
                 buttonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 textColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                         .height(50.dp)
                         .weight(1f)
-                        .noRippleClickable { onCancelClick() }
+                        .noRippleClickable {}
             )
             Spacer(modifier = Modifier.width(24.dp))
             MyAppButton(
                 onClick = {onProceedClick()}, /*TODO() Add the clicking functionality*/
-                buttonText = "Proceed",
-                buttonColor = MaterialTheme.colorScheme.primaryContainer,
-                textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                buttonText = stringResource(R.string.proceed),
                 modifier = Modifier
                         .height(50.dp)
                         .weight(1f)
-                        .noRippleClickable { onProceedClick() }
+                        .noRippleClickable {}
             )
         }
     }

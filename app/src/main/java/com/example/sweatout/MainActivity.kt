@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sweatout.ui.theme.SweatOutTheme
+import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.weight_selection.WeightSelectionScreen
 
 class MainActivity : ComponentActivity() {
@@ -17,13 +19,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val welcomeViewModel: WelcomeModuleViewModel = viewModel()
             SweatOutTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(), containerColor = MaterialTheme.colorScheme.surface
                 ) { innerPadding ->
 //                    HomeScreen(modifier = Modifier.fillMaxSize().padding(innerPadding))
 //                    AgeSelectionScreen(modifier = Modifier.padding(innerPadding), {}, {})
 //                    HeightSelectionScreen(modifier = Modifier.padding(innerPadding), {}, {})
-                    WeightSelectionScreen(modifier = Modifier.padding(innerPadding), {}, {})
+                    WeightSelectionScreen(modifier = Modifier.padding(innerPadding), viewModel =
+                    welcomeViewModel, {}, {})
                 }
             }
         }

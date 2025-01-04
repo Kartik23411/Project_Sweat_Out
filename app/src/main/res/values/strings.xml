@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Sweat Out</string>
     <string name="age_selection_screen_headline">How Old Are You?</string>
-    <string name="age_selection_screen_about_text">This will help us to personalize an exercise plan that suits your body.</string>
+    <string name="age_selection_screen_about_text">Age in years,This will help us to personalize an exercise plan that suits your body.</string>
     <string name="height_selection_screen_headline">What is Your Height?</string>
     <string name="height_selection_screen_about_text">Height in cm, Don\'t worry, you can always change it later.</string>
     <string name="weight_selection_screen_headline">What is Your Weight?</string>
@@ -10,4 +10,6 @@
     <string name="gender_selection_screen_about_text">To give you a better experience and results we need to know your gender.</string>
     <string name="welcome_screen_text">Let\'s have a workout daily and live healthy with us</string>
     <string name="get_started">Get Started</string>
+    <string name="back">Back</string>
+    <string name="proceed">Proceed</string>
 </resources>

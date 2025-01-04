@@ -40,71 +40,7 @@ interface FWheelPickerDisplayScope : FWheelPickerContentScope {
 }
 
 @Composable
-fun VerticalWheelPicker(
-    modifier: Modifier = Modifier,
-    count: Int,
-    initialIndex:Int,
-    state: FWheelPickerState = rememberFWheelPickerState(),
-    key: ((index: Int) -> Any)? = null,
-    itemHeight: Dp = 90.dp,
-    unfocusedCount: Int = 2,
-    userScrollEnabled: Boolean = true,
-    reverseLayout: Boolean = false,
-    focus: @Composable () -> Unit = { FWheelPickerFocusVertical() },
-    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { DefaultWheelPickerDisplay(it) },
-    content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
-) {
-    WheelPicker(
-        modifier = modifier,
-        isVertical = true,
-        count = count,
-        initialIndex = initialIndex,
-        state = state,
-        key = key,
-        itemSize = itemHeight,
-        unfocusedCount = unfocusedCount,
-        userScrollEnabled = userScrollEnabled,
-        reverseLayout = reverseLayout,
-        focus = focus,
-        display = display,
-        content = content,
-    )
-}
-
-@Composable
-fun HorizontalWheelPicker(
-    modifier: Modifier = Modifier,
-    count: Int,
-    initialIndex: Int,
-    state: FWheelPickerState = rememberFWheelPickerState(),
-    key: ((index: Int) -> Any)? = null,
-    itemWidth: Dp = 90.dp,
-    unfocusedCount: Int = 1,
-    userScrollEnabled: Boolean = true,
-    reverseLayout: Boolean = false,
-    focus: @Composable () -> Unit = { FWheelPickerFocusHorizontal() },
-    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { DefaultWheelPickerDisplay(it) },
-    content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
-) {
-    WheelPicker(
-        modifier = modifier,
-        isVertical = false,
-        count = count,
-        initialIndex = initialIndex,
-        state = state,
-        key = key,
-        itemSize = itemWidth,
-        unfocusedCount = unfocusedCount,
-        userScrollEnabled = userScrollEnabled,
-        reverseLayout = reverseLayout,
-        focus = focus,
-        display = display,
-        content = content,
-    )
-}
-
-@Composable
-private fun WheelPicker(
+fun WheelPicker(
     modifier: Modifier,
     isVertical: Boolean,
     count: Int,
@@ -128,7 +64,7 @@ private fun WheelPicker(
         isVertical = isVertical,
         itemSize = itemSize,
         unfocusedCount = unfocusedCount,
-    ) { it ->
+    ) {
         InternalWheelPicker(
             isVertical = isVertical,
             count = count,
