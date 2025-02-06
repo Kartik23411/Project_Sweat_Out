@@ -1,17 +1,14 @@
 package com.example.sweatout.welcome.presentation.gender_selection
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,8 +24,7 @@ import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.components.CustomAboutText
 import com.example.sweatout.welcome.presentation.components.CustomHeadlineText
-import com.example.sweatout.welcome.presentation.components.MyAppButton
-import com.example.sweatout.welcome.presentation.components.noRippleClickable
+import com.example.sweatout.welcome.presentation.components.WelcomeNavigationButtonRow
 import com.example.sweatout.welcome.presentation.gender_selection.components.CircularSelectingBox
 
 @Composable
@@ -39,8 +35,9 @@ fun GenderSelectionScreen(
     onProceedClick: () -> Unit
 ) {
     var isMaleSelected by remember { mutableStateOf(false) }
-    var isFemaleSelected by remember { mutableStateOf(true) }
+    var isFemaleSelected by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val user by viewModel.userUiState.collectAsState()
 
     Column(
         modifier = modifier,
@@ -59,7 +56,7 @@ fun GenderSelectionScreen(
         ) {
             CircularSelectingBox(
                 icon = painterResource(R.drawable.baseline_male_24),
-                text = "Male",
+                text = stringResource(R.string.male),
                 isSelected = isMaleSelected,
                 unselectedColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 selectedColor = MaterialTheme.colorScheme.primaryContainer,
@@ -75,7 +72,7 @@ fun GenderSelectionScreen(
 
             CircularSelectingBox(
                 icon = painterResource(R.drawable.baseline_female_24),
-                text = "Female",
+                text = stringResource(R.string.female),
                 isSelected = isFemaleSelected,
                 unselectedColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 selectedColor = MaterialTheme.colorScheme.primaryContainer,
@@ -90,43 +87,25 @@ fun GenderSelectionScreen(
             )
         }
         // Proceed and cancel Button Row
-        Row(
-            modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            MyAppButton(
-                onClick = { onCancelClick() }, /*TODO() Add the clicking functionality*/
-                buttonText = stringResource(R.string.back),
-                buttonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                        .height(50.dp)
-                        .weight(1f)
-                        .noRippleClickable {}
-            )
-            Spacer(Modifier.width(24.dp))
-            MyAppButton(
-                onClick = {
-                    if (isMaleSelected) {
-                        viewModel.updateGender("Male")
-                        onProceedClick()
-                    }
-                    else if (isFemaleSelected) {
-                        viewModel.updateGender("Female")
-                        onProceedClick()
-                    }
-                    else {
-                        Toast.makeText(context, "Please select anyone option", Toast.LENGTH_SHORT).show()
-                    }
-                },
-                buttonText = stringResource(R.string.proceed),
-                modifier = Modifier
-                        .height(50.dp)
-                        .weight(1f)
-                        .noRippleClickable {}
-            )
-        }
+        WelcomeNavigationButtonRow(
+            onCancel = {
+                Log.e("gender", "${user.gender}")
+                onCancelClick()
+            },
+            onProceed = {
+                if (isMaleSelected) {
+                    viewModel.updateGender(context.getString(R.string.male))
+                    onProceedClick()
+                }
+                else if (isFemaleSelected) {
+                    viewModel.updateGender(context.getString(R.string.female))
+                    onProceedClick()
+                }
+                else {
+                    Toast.makeText(context, "Please select anyone option", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            },
+        )
     }
 }

@@ -45,6 +45,8 @@ dependencies {
     // navigation viewmodel and livedata
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // Adaptive Navigation
+    implementation(libs.androidx.material3.adaptive.navigation.suite)
 
     implementation (libs.coil.compose)
 
@@ -57,6 +59,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

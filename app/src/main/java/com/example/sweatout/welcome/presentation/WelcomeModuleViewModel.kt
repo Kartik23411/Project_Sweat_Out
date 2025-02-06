@@ -1,5 +1,7 @@
 package com.example.sweatout.welcome.presentation
 
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.sweatout.welcome.presentation.models.UserUI
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,5 +25,25 @@ class WelcomeModuleViewModel:ViewModel() {
 
     fun updateWeight(weight:Int){
         _userUiState.value = _userUiState.value.copy(weight = weight)
+    }
+
+    fun updateActivityLevel(level:String){
+        _userUiState.value = _userUiState.value.copy(activityLevel = level)
+    }
+
+    fun updateGoals(goals:List<String>){
+        _userUiState.value = _userUiState.value.copy(goals = goals)
+    }
+
+    fun signInUserByEmail(){
+        Log.e("login", "Login attempted")
+    }
+
+    fun signUpUserByEmail(){
+        Log.e("signup", "sign up attempted")
+    }
+
+    fun updateImage(imageUri: Uri){ // to temporary store the data
+        _userUiState.value = _userUiState.value.copy(imageUrl = imageUri.toString())
     }
 }

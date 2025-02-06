@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -52,7 +53,9 @@ fun HomeScreen(
     ) {
         // Top bar row
         Row (
-            modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -90,13 +93,13 @@ fun HomeScreen(
                             .padding(start = 8.dp)
                 ){
                     Text(
-                        text = "Welcome Back 🎉",
+                        text = stringResource(R.string.welcome_back),
                         style = (MaterialTheme.typography.titleSmall).copy(fontSize = 14.sp,
                             lineHeight = 12.sp),
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = .75f)
                     )
                     Text(
-                        text = "Kartik",
+                        text = "Kartik", //TODO() add the user name displaying function
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontSize = 25.sp,
                             letterSpacing = 2.sp,
@@ -132,14 +135,14 @@ fun HomeScreen(
             Row(
                 modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(vertical = 16.dp, horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ){
                 // decorative icon
                 Box(
                     modifier = Modifier
-                            .size(80.dp)
+                            .size(78.dp)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.surfaceContainerLow),
                     contentAlignment = Alignment.Center
@@ -154,15 +157,17 @@ fun HomeScreen(
                 // Text part
                 Column(
                     horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.weight(1f).padding(8.dp)
+                    modifier = Modifier
+                            .weight(1f)
+                            .padding(4.dp)
                 ) {
                     Text(
-                        text = "Hey, Ready to Workout",
+                        text = stringResource(R.string.start_exercise_card_text),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleLarge.copy(fontSize = 22.sp),
                     )
                     Text(
-                        text = "Let's have a quick one",
+                        text = stringResource(R.string.start_exercise_card_text_2),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .6f),
                         style = MaterialTheme.typography.titleSmall
                     )
@@ -177,63 +182,80 @@ fun HomeScreen(
         }
 
         Text(
-            text = "Health Metrics",
+            text = stringResource(R.string.health_metrics),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(12.dp)
         )
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(8.dp)
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 HealthMetricCard(
-                    modifier = Modifier.weight(1f).padding(end = 8.dp),
-                    displayText = "Cal Burned",
+                    modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp),
+                    displayText = stringResource(R.string.cal_card),
                     displayValue = 120f,
-                    displayUnit = "cal",
+                    displayUnit = stringResource(R.string.unit_cal),
                     displayIcon = painterResource(R.drawable.calories_svgrepo_com),
                 )
                 HealthMetricCard(
-                    modifier = Modifier.weight(1f).padding(start = 8.dp),
-                    displayText = "Weight",
+                    modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp),
+                    displayText = stringResource(R.string.weight_card),
                     displayValue = 70f,
-                    displayUnit = "Kg",
+                    displayUnit = stringResource(R.string.unit_kg),
                     displayIcon = painterResource(R.drawable.weight),
                 )
             }
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 HealthMetricCard(
-                    modifier = Modifier.weight(1f).padding(end = 8.dp),
-                    displayText = "BMI",
+                    modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp),
+                    displayText = stringResource(R.string.bmi_card),
                     displayValue = 19f,
-                    displayUnit = "Kg/m\u00B2",
+                    displayUnit = stringResource(R.string.unit_bmi),
                     displayIcon = painterResource(R.drawable.speedometer),
                 )
                 HealthMetricCard(
-                    modifier = Modifier.weight(1f).padding(start = 8.dp),
-                    displayText = "Height",
+                    modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp),
+                    displayText = stringResource(R.string.height_card),
                     displayValue = 170f,
-                    displayUnit = "cm",
+                    displayUnit = stringResource(R.string.unit_cm),
                     displayIcon = painterResource(R.drawable.height),
                 )
             }
         }
 
         Text(
-            text = "Your Activity",
+            text = stringResource(R.string.your_activity),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(12.dp)
         )
 
-        ActivityGraph(modifier = Modifier.fillMaxWidth().padding(16.dp).height(200.dp))
+        ActivityGraph(modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp, horizontal = 12.dp)
+                .height(200.dp))
 
     }
 }
