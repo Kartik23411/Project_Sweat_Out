@@ -1,4 +1,4 @@
-package com.example.sweatout.welcome.presentation.login_signup.components
+package com.example.sweatout.welcome.presentation.authentication.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -24,13 +24,13 @@ import com.example.sweatout.welcome.presentation.components.noRippleClickable
 
 @Composable
 fun CustomTextButton(
-    modifier: Modifier = Modifier,
     @StringRes textId: Int,
     onClick: () -> Unit,
     color: Color = MaterialTheme.colorScheme.error,
+    modifier: Modifier = Modifier,
 ) {
     TextButton(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
         onClick = { onClick() },
         colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.surface)
     ) {

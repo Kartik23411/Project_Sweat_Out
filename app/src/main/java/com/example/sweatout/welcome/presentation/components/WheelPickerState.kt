@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,8 +49,8 @@ class FWheelPickerState internal constructor(
     internal var isReady by mutableStateOf(false)
 
     private var _count = 0
-    private var _currentIndex by mutableIntStateOf(-1)
-    private var _currentIndexSnapshot by mutableIntStateOf(-1)
+    private var _currentIndex by mutableIntStateOf(- 1)
+    private var _currentIndexSnapshot by mutableIntStateOf(- 1)
 
     private var _pendingIndex: Int? = initialIndex.coerceAtLeast(0)
     private var _pendingIndexContinuation: CancellableContinuation<Unit>? = null
@@ -87,7 +86,7 @@ class FWheelPickerState internal constructor(
     val isScrollInProgress: Boolean get() = lazyListState.isScrollInProgress
 
     suspend fun animateScrollToIndex(index: Int) {
-        Log.e("scroll","animateScrollToIndex index:$index count:$_count" )
+        Log.e("scroll", "animateScrollToIndex index:$index count:$_count")
         @Suppress("NAME_SHADOWING")
         val index = index.coerceAtLeast(0)
         lazyListState.animateScrollToItem(index)
@@ -136,7 +135,8 @@ class FWheelPickerState internal constructor(
         if (maxIndex < _currentIndex) {
             if (count > 0) {
                 scrollToIndex(maxIndex)
-            } else {
+            }
+            else {
                 synchronizeCurrentIndex()
             }
         }
@@ -151,10 +151,12 @@ class FWheelPickerState internal constructor(
                 if (continuation?.isActive == true) {
 //                    logMsg(debug) { "resume pendingIndexContinuation" }
                     continuation.resume(Unit)
-                } else {
+                }
+                else {
                     scrollToIndex(pendingIndex)
                 }
-            } else {
+            }
+            else {
                 if (_currentIndex < 0) {
                     synchronizeCurrentIndex()
                 }
@@ -174,7 +176,7 @@ class FWheelPickerState internal constructor(
     }
 
     internal fun synchronizeCurrentIndexSnapshot(): Int {
-        return (mostStartItemInfo()?.index ?: -1).also {
+        return (mostStartItemInfo()?.index ?: - 1).also {
             _currentIndexSnapshot = it
         }
     }
@@ -195,7 +197,8 @@ class FWheelPickerState internal constructor(
         val firstOffsetDelta = (firstItem.offset - layoutInfo.viewportStartOffset).absoluteValue
         return if (firstOffsetDelta < firstItem.size / 2) {
             firstItem
-        } else {
+        }
+        else {
             listInfo[1]
         }
     }

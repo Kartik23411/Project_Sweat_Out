@@ -16,13 +16,13 @@ import com.example.sweatout.welcome.presentation.components.noRippleClickable
 
 @Composable
 fun CustomActivityLevelButton(
-    onClick:() -> Unit,
-    isSelected : Boolean,
+    onClick: () -> Unit,
+    isSelected: Boolean,
     @StringRes id: Int,
     modifier: Modifier = Modifier,
 ) {
     MyAppButton(
-        onClick = {onClick()},
+        onClick = { onClick() },
         buttonText = stringResource(id),
         buttonColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
         else
@@ -37,7 +37,8 @@ fun CustomActivityLevelButton(
                 .shadow(
                     if (isSelected) 5.dp else 0.dp,
                     shape = RoundedCornerShape(20),
-                    ambientColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .3f))
+                    ambientColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .3f)
+                )
                 .fillMaxWidth(1f)
                 .noRippleClickable {},
         elevation = if (isSelected) 5.dp else 0.dp

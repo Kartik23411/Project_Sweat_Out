@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 
 data class Exercise(
     val name: String,
-    @DrawableRes val image:Int,
+    @DrawableRes val image: Int,
     val howTo: String,
     val muscleInvolved: String,
     val calBurned: Int,

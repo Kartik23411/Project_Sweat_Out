@@ -40,6 +40,7 @@ import com.example.sweatout.R
 import com.example.sweatout.ui.theme.SweatOutTheme
 import com.example.sweatout.workout.presentation.home.components.ActivityGraph
 import com.example.sweatout.workout.presentation.home.components.HealthMetricCard
+import com.example.sweatout.workout.presentation.home.components.SectionSeparationText
 
 @Composable
 fun HomeScreen(
@@ -52,17 +53,17 @@ fun HomeScreen(
                 .padding(horizontal = 16.dp),
     ) {
         // Top bar row
-        Row (
+        Row(
             modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
+                    .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             // Profile and Greeting Row
             Row(
-                modifier = Modifier.weight(1f)
-            ){
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 // Profile Image
                 IconButton(
                     modifier = Modifier.size(50.dp),
@@ -91,19 +92,22 @@ fun HomeScreen(
                     modifier = Modifier
                             .weight(1f)
                             .padding(start = 8.dp)
-                ){
+                ) {
                     Text(
                         text = stringResource(R.string.welcome_back),
-                        style = (MaterialTheme.typography.titleSmall).copy(fontSize = 14.sp,
-                            lineHeight = 12.sp),
+                        style = (MaterialTheme.typography.titleSmall).copy(
+                            fontSize = 14.sp,
+                            lineHeight = 12.sp
+                        ),
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = .75f)
                     )
                     Text(
-                        text = "Kartik", //TODO() add the user name displaying function
+                        text = "Kartik",
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontSize = 25.sp,
                             letterSpacing = 2.sp,
-                            fontWeight = FontWeight.ExtraBold),
+                            fontWeight = FontWeight.ExtraBold
+                        ),
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -138,7 +142,7 @@ fun HomeScreen(
                         .padding(vertical = 16.dp, horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
-            ){
+            ) {
                 // decorative icon
                 Box(
                     modifier = Modifier
@@ -176,15 +180,13 @@ fun HomeScreen(
                 Icon(
                     modifier = Modifier.size(30.dp),
                     painter = painterResource(R.drawable.baseline_arrow_forward_24),
-                    contentDescription = "Forward Arrow"
+                    contentDescription = null
                 )
             }
         }
 
-        Text(
-            text = stringResource(R.string.health_metrics),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSurface,
+        SectionSeparationText(
+            textId = R.string.health_metrics,
             modifier = Modifier.padding(12.dp)
         )
 
@@ -245,17 +247,17 @@ fun HomeScreen(
             }
         }
 
-        Text(
-            text = stringResource(R.string.your_activity),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSurface,
+        SectionSeparationText(
+            textId = R.string.your_activity,
             modifier = Modifier.padding(12.dp)
         )
 
-        ActivityGraph(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 12.dp)
-                .height(200.dp))
+        ActivityGraph(
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp, horizontal = 12.dp)
+                    .height(200.dp)
+        )
 
     }
 }
@@ -265,8 +267,10 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     SweatOutTheme {
-        HomeScreen(modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface))
+        HomeScreen(
+            modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+        )
     }
 }

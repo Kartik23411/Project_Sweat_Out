@@ -22,8 +22,12 @@ fun CustomHeadlineText(
                 .fillMaxWidth()
                 .padding(top = 32.dp),
         text = stringResource(textId),
-        style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center),
-        color = MaterialTheme.colorScheme.onSurface)
+        style = MaterialTheme.typography.headlineLarge.copy(
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        ),
+        color = MaterialTheme.colorScheme.onSurface
+    )
 }
 
 @Composable

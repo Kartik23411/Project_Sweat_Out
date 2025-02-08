@@ -44,7 +44,7 @@ fun WheelPicker(
     modifier: Modifier,
     isVertical: Boolean,
     count: Int,
-    initialIndex:Int,
+    initialIndex: Int,
     state: FWheelPickerState,
     key: ((index: Int) -> Any)?,
     itemSize: Dp,
@@ -88,7 +88,7 @@ fun WheelPicker(
 private fun InternalWheelPicker(
     isVertical: Boolean,
     count: Int,
-    initialIndex:Int,
+    initialIndex: Int,
     state: FWheelPickerState,
     key: ((index: Int) -> Any)?,
     itemSize: Dp,
@@ -134,48 +134,51 @@ private fun InternalWheelPicker(
                     if (totalSize > 0.dp) {
                         if (isVertical) {
                             height(totalSize).widthIn(40.dp)
-                        } else {
+                        }
+                        else {
                             width(totalSize).heightIn(40.dp)
                         }
-                    } else {
+                    }
+                    else {
                         this
                     }
                 },
         contentAlignment = Alignment.Center,
     ) {
 
-        val lazyListScope: LazyListScope.() -> Unit = { // here dot signifies that the lambda operates on Lazy list scope
+        val lazyListScope: LazyListScope.() -> Unit =
+                { // here dot signifies that the lambda operates on Lazy list scope
 
-            repeat(unfocusedCount) {
-                item(contentType = "placeholder") {
-                    ItemSizeBox(
-                        isVertical = isVertical,
-                        itemSize = itemSize,
-                    )
-                }
-            }
+                    repeat(unfocusedCount) {
+                        item(contentType = "placeholder") {
+                            ItemSizeBox(
+                                isVertical = isVertical,
+                                itemSize = itemSize,
+                            )
+                        }
+                    }
 
-            items(
-                count = count,
-                key = key,
-            ) { index ->
-                ItemSizeBox(
-                    isVertical = isVertical,
-                    itemSize = itemSize,
-                ) {
-                    displayScope.display(index)
-                }
-            }
+                    items(
+                        count = count,
+                        key = key,
+                    ) { index ->
+                        ItemSizeBox(
+                            isVertical = isVertical,
+                            itemSize = itemSize,
+                        ) {
+                            displayScope.display(index)
+                        }
+                    }
 
-            repeat(unfocusedCount) {
-                item(contentType = "placeholder") {
-                    ItemSizeBox(
-                        isVertical = isVertical,
-                        itemSize = itemSize,
-                    )
+                    repeat(unfocusedCount) {
+                        item(contentType = "placeholder") {
+                            ItemSizeBox(
+                                isVertical = isVertical,
+                                itemSize = itemSize,
+                            )
+                        }
+                    }
                 }
-            }
-        }
 
         if (isVertical) {
             LazyColumn(
@@ -186,7 +189,8 @@ private fun InternalWheelPicker(
                 modifier = Modifier.matchParentSize(),
                 content = lazyListScope,
             )
-        } else {
+        }
+        else {
             LazyRow(
                 state = state.lazyListState,
                 verticalAlignment = Alignment.CenterVertically,
@@ -197,7 +201,8 @@ private fun InternalWheelPicker(
             )
         }
 
-        ItemSizeBox(  // it is the decorative box for the middle item
+        ItemSizeBox(
+            // it is the decorative box for the middle item
             modifier = Modifier.align(Alignment.Center),
             isVertical = isVertical,
             itemSize = itemSize,
@@ -224,7 +229,8 @@ private fun SafeBox(
             val totalSize = itemSize * (unfocusedCount * 2 + 1)
             if (totalSize <= maxSize) {
                 unfocusedCount
-            } else {
+            }
+            else {
                 (((maxSize - itemSize) / 2f) / itemSize).toInt().coerceAtLeast(0)
                 // in this calculation the item_size subtracted is for the padding and the remaining space then divided by item_size to check how many items can be fitted up and then converted to int
             }
@@ -234,7 +240,8 @@ private fun SafeBox(
 }
 
 @Composable
-private fun ItemSizeBox(  // to make the box for item
+private fun ItemSizeBox(
+    // to make the box for item
     modifier: Modifier = Modifier,
     isVertical: Boolean,
     itemSize: Dp,
@@ -245,7 +252,8 @@ private fun ItemSizeBox(  // to make the box for item
                 .run {
                     if (isVertical) { //Calls the specified function block with this value as its receiver and returns its result.
                         height(itemSize)  // declare the preferred height in dp
-                    } else {
+                    }
+                    else {
                         width(itemSize) // declare the preferred width if horizontal wheel picker
                     }
                 },
@@ -262,7 +270,11 @@ private class WheelPickerNestedScrollConnection(
     var itemSizePx: Int = 0
     var reverseLayout: Boolean = false
 
-    override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+    override fun onPostScroll(
+        consumed: Offset,
+        available: Offset,
+        source: NestedScrollSource
+    ): Offset {
         state.synchronizeCurrentIndexSnapshot()
         return super.onPostScroll(consumed, available, source)
     }
@@ -278,12 +290,14 @@ private class WheelPickerNestedScrollConnection(
             ).let { flingItemCount ->
                 if (flingItemCount == 0) {
                     state.animateScrollToIndex(currentIndex)
-                } else {
+                }
+                else {
                     state.animateScrollToIndex(currentIndex - flingItemCount)
                 }
             }
             available
-        } else {
+        }
+        else {
             super.onPreFling(available)
         }
     }
@@ -299,7 +313,7 @@ private fun Velocity.flingItemCount(
     val velocity = if (isVertical) y else x
     val targetValue = decay.calculateTargetValue(0f, velocity)
     val flingItemCount = (targetValue / itemSize).toInt()
-    return if (reverseLayout) -flingItemCount else flingItemCount
+    return if (reverseLayout) - flingItemCount else flingItemCount
 }
 
 private class FWheelPickerDisplayScopeImpl(

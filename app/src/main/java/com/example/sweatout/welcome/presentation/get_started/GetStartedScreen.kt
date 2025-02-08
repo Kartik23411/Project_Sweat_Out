@@ -29,7 +29,7 @@ import com.example.sweatout.welcome.presentation.components.noRippleClickable
 @Composable
 fun GetStartedScreen(
     modifier: Modifier = Modifier,
-    onStartedClick:()->Unit
+    onStartedClick: () -> Unit
 ) {
     Column(
         modifier = modifier.background(MaterialTheme.colorScheme.surface),

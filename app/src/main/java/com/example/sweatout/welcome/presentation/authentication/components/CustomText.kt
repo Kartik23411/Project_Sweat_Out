@@ -1,4 +1,4 @@
-package com.example.sweatout.welcome.presentation.login_signup.components
+package com.example.sweatout.welcome.presentation.authentication.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +20,7 @@ fun CustomLoginHeadline(
     Text(
         modifier = modifier
                 .fillMaxWidth()
-                .padding(bottom = 36.dp, top = 48.dp, start = 16.dp),
+                .padding(bottom = 36.dp, top = 32.dp, start = 16.dp),
         text = stringResource(textId),
         style = MaterialTheme.typography.displayMedium.copy(
             fontWeight = FontWeight.Bold,

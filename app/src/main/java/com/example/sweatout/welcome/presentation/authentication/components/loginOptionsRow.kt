@@ -1,4 +1,4 @@
-package com.example.sweatout.welcome.presentation.login_signup.components
+package com.example.sweatout.welcome.presentation.authentication.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -30,8 +30,11 @@ fun LoginOptionRow(
             onClick = { secondLoginAction() }
         )
         LoginOptionButton(
-            painterRes = painterResource(if (isSystemInDarkTheme())R.drawable.apple else R.drawable
-                    .apple_logo),
+            painterRes = painterResource(
+                if (isSystemInDarkTheme()) R.drawable.apple
+                else R.drawable
+                        .apple_logo
+            ),
             onClick = { thirdLoginAction() }
         )
     }

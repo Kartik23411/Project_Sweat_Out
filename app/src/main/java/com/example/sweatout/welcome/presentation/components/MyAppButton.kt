@@ -13,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -26,7 +25,7 @@ fun MyAppButton(
     buttonText: String,
     textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     roundRadius: Int = 50,
-    border:BorderStroke? = null,
+    border: BorderStroke? = null,
     elevation: Dp = 0.dp,
     style: TextStyle = MaterialTheme.typography.labelLarge
 ) {

@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.sweatout.R
 import com.example.sweatout.ui.theme.SweatOutTheme
 import java.text.NumberFormat
@@ -43,12 +42,14 @@ fun HealthMetricCard(
     ) {
         // Name and Icon Row
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 8.dp, top = 4.dp, end = 8.dp),
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, top = 4.dp, end = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
-        ){
+        ) {
             Text(
                 text = displayText,
-                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Light),
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Normal),
                 color = MaterialTheme.colorScheme.onSurface
             )
             Icon(
@@ -60,7 +61,9 @@ fun HealthMetricCard(
         }
         // value and Unit Row
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, bottom = 12.dp),
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, bottom = 12.dp),
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -84,7 +87,7 @@ fun HealthMetricCard(
     }
 }
 
-fun Float.formattedString():String{
+fun Float.formattedString(): String {
     val formatter = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
         maximumFractionDigits = 1
         minimumFractionDigits = 0

@@ -34,7 +34,11 @@ fun WeightWheelPicker(
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
     focus: @Composable () -> Unit = { WeightWheelPickerFocus() },
-    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { DefaultWheelPickerDisplay(it) },
+    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = {
+        DefaultWheelPickerDisplay(
+            it
+        )
+    },
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(

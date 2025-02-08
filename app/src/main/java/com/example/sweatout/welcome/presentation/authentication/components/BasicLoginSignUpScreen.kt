@@ -1,6 +1,8 @@
-package com.example.sweatout.welcome.presentation.login_signup.components
+package com.example.sweatout.welcome.presentation.authentication.components
 
+import android.util.Log
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,7 +39,7 @@ import com.example.sweatout.welcome.presentation.components.noRippleClickable
 fun BasicLoginAndSignUpScreen(
     modifier: Modifier = Modifier,
     onTextButtonClick: () -> Unit,
-    onAuthenticationButtonClick: () -> Unit,
+    onAuthenticationButtonClick: (String, String) -> Unit,
     @StringRes authenticationButtonText: Int,
     @StringRes textButtonText: Int,
     @StringRes headlineText: Int,
@@ -89,11 +91,13 @@ fun BasicLoginAndSignUpScreen(
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
                 if (isLoginScreen) {
-                    CustomTextButton(Modifier, R.string.forget_password, {})
+                    CustomTextButton( R.string.forget_password, onClick =  {Log.e("authentication", "Forget click")})
                 }
                 else Spacer(Modifier.height(16.dp))
             }
+
             RememberButton()
+
             Spacer(Modifier.height(16.dp))
 
             MyAppButton(
@@ -101,7 +105,7 @@ fun BasicLoginAndSignUpScreen(
                         .noRippleClickable {}
                         .fillMaxWidth(fraction = 1f)
                         .height(50.dp),
-                onClick = { onAuthenticationButtonClick() },
+                onClick = { onAuthenticationButtonClick(email.value!!, password.value!!) },
                 textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 buttonColor = MaterialTheme.colorScheme.primaryContainer,
                 buttonText = stringResource(authenticationButtonText),
@@ -112,12 +116,12 @@ fun BasicLoginAndSignUpScreen(
         DividerLine()
 
         LoginOptionRow(
-            firstLoginAction = {},
-            secondLoginAction = {},
-            thirdLoginAction = {},
+            firstLoginAction = {Log.e("authentication", "Clicked 1")},
+            secondLoginAction = {Log.e("authentication", "Clicked 1")},
+            thirdLoginAction = {Log.e("authentication", "Clicked 1")},
             modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 48.dp, vertical = 48.dp)
+                    .padding(horizontal = 48.dp, vertical = 32.dp)
         )
 
         Row(
@@ -127,7 +131,11 @@ fun BasicLoginAndSignUpScreen(
         ) {
             CustomCompanionText(textId = textButtonIntroText)
             CustomTextButton(
-                textId = textButtonText, onClick = { onTextButtonClick() }, color =
+                textId = textButtonText, onClick = {
+                    Log.e("authentication", "Signup button error")
+                    onTextButtonClick()
+                },
+                color =
                 MaterialTheme.colorScheme.primaryContainer.copy(alpha = .6f)
             )
         }

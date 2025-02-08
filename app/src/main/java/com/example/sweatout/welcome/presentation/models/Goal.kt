@@ -20,10 +20,10 @@ val goalsList = mutableListOf(
     ),
     Goal(
         text = "Building Muscles"
-    ) ,
+    ),
     Goal(
         text = "Improving Endurance"
-    ) ,
+    ),
     Goal(
         text = "Others"
     )

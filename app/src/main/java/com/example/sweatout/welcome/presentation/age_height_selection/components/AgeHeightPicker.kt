@@ -23,7 +23,7 @@ import com.example.sweatout.welcome.presentation.components.rememberFWheelPicker
 fun Age_HeightPicker(
     modifier: Modifier = Modifier,
     count: Int,
-    initialIndex:Int,
+    initialIndex: Int,
     state: FWheelPickerState = rememberFWheelPickerState(),
     key: ((index: Int) -> Any)? = null,
     itemHeight: Dp = 90.dp,
@@ -31,7 +31,11 @@ fun Age_HeightPicker(
     userScrollEnabled: Boolean = true,
     reverseLayout: Boolean = false,
     focus: @Composable () -> Unit = { AgeHeightPickerDefaultFocus() },
-    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = { DefaultWheelPickerDisplay(it) },
+    display: @Composable FWheelPickerDisplayScope.(index: Int) -> Unit = {
+        DefaultWheelPickerDisplay(
+            it
+        )
+    },
     content: @Composable FWheelPickerContentScope.(index: Int) -> Unit,
 ) {
     WheelPicker(
