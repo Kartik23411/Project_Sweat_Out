@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.sweatout.R
+import com.example.sweatout.core.presentation.MyAppButton
+import com.example.sweatout.core.presentation.noRippleClickable
 
 @Composable
 fun WelcomeNavigationButtonRow(
@@ -53,42 +55,3 @@ fun WelcomeNavigationButtonRow(
         )
     }
 }
-
-//Row(
-//modifier = Modifier
-//.fillMaxWidth()
-//.padding(horizontal = 24.dp, vertical = 16.dp),
-//horizontalArrangement = Arrangement.SpaceBetween
-//) {
-//    MyAppButton(
-//        onClick = {
-//            Log.e("activity Level", "${viewModel.userUiState.value.activityLevel}")
-//            onCancelClick()
-//        },
-//        buttonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-//        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-//        buttonText = stringResource(R.string.back),
-//        modifier = Modifier
-//                .weight(1f)
-//                .height(50.dp)
-//                .noRippleClickable { onCancelClick() }
-//    )
-//    Spacer(Modifier.width(24.dp))
-//
-//    MyAppButton(
-//        onClick = {
-//            viewModel.updateActivityLevel(
-//                getActivityLevel(
-//                    context, isSelected1,
-//                    isSelected2, isSelected3
-//                )
-//            )
-//            onProceedClick()
-//        },
-//        buttonText = stringResource(R.string.proceed),
-//        modifier = Modifier
-//                .weight(1f)
-//                .height(50.dp)
-//                .noRippleClickable { onProceedClick() }
-//    )
-//}

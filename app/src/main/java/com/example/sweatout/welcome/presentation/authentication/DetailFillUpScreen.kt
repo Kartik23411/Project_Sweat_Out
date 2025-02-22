@@ -42,10 +42,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
+import com.example.sweatout.welcome.presentation.authentication.components.CustomTextField
 import com.example.sweatout.welcome.presentation.components.CustomAboutText
 import com.example.sweatout.welcome.presentation.components.CustomHeadlineText
 import com.example.sweatout.welcome.presentation.components.WelcomeNavigationButtonRow
-import com.example.sweatout.welcome.presentation.authentication.components.CustomTextField
 
 @Composable
 fun DetailsFillUpScreen(
@@ -133,13 +133,18 @@ fun DetailsFillUpScreen(
                 onCancelClick()
             },
             onProceed = {
-                if (name.value != null && username.value!= null && mobileNo.value != null ) {
+                if (name.value != null && username.value != null && mobileNo.value != null) {
                     viewModel.updateName(name.value !!)
                     viewModel.updateUsername(username.value !!)
                     viewModel.updateMobileNo(mobileNo.value !!)
                     onProceedClick()
-                }else{
-                    Toast.makeText(context, context.getString(R.string.fill_details_error), Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.fill_details_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             },
         )

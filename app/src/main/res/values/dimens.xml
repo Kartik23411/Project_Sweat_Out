@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="timer_text_font_size">80sp</dimen>
+    <dimen name="timer_circle_radius">100dp</dimen>
+    <dimen name="timer_stroke_width">16dp</dimen>
+</resources>

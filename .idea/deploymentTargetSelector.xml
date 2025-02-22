@@ -26,9 +26,6 @@
           </targets>
         </DialogSelection>
       </SelectionState>
-      <SelectionState runConfigName="GenderSelectionScreenPreview">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="WelcomeScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
@@ -47,6 +44,9 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="ButtonPrevieww">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="previewll">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

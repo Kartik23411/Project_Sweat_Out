@@ -10,18 +10,18 @@ import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 @Composable
 fun WorkOutAppNavHost(
     navController: NavHostController,
-    startDestination:String,
+    startDestination: String,
     modifier: Modifier = Modifier,
     welcomeViewModel: WelcomeModuleViewModel = viewModel()
+) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = modifier
     ) {
-        NavHost(
-            navController = navController,
-            startDestination = startDestination,
-            modifier = modifier
-        ) {
 //            if(startDestination == "welcome_graph")
-            welcomeGraph(navController, welcomeViewModel, Modifier)
+        welcomeGraph(navController, welcomeViewModel, Modifier)
 //            else
-            HomeGraph(navController, Modifier)  // This includes `mod1` and `mod2`
-        }
+        HomeGraph(navController, Modifier)  // This includes `mod1` and `mod2`
+    }
 }

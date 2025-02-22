@@ -22,9 +22,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sweatout.R
+import com.example.sweatout.core.presentation.MyAppButton
+import com.example.sweatout.core.presentation.noRippleClickable
 import com.example.sweatout.ui.theme.SweatOutTheme
-import com.example.sweatout.welcome.presentation.components.MyAppButton
-import com.example.sweatout.welcome.presentation.components.noRippleClickable
 
 @Composable
 fun GetStartedScreen(

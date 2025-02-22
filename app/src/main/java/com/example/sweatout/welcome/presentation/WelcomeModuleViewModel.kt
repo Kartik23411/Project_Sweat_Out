@@ -35,15 +35,15 @@ class WelcomeModuleViewModel : ViewModel() {
         _userUiState.value = _userUiState.value.copy(goals = goals)
     }
 
-    fun updateName(new:String){
+    fun updateName(new: String) {
         _userUiState.value = _userUiState.value.copy(name = new)
     }
 
-    fun updateUsername(new:String){
+    fun updateUsername(new: String) {
         _userUiState.value = _userUiState.value.copy(nickName = new)
     }
 
-    fun updateMobileNo(new: String){
+    fun updateMobileNo(new: String) {
         _userUiState.value = _userUiState.value.copy(phoneNo = new)
     }
 
@@ -51,7 +51,7 @@ class WelcomeModuleViewModel : ViewModel() {
         _userUiState.value = _userUiState.value.copy(imageUrl = imageUri.toString())
     }
 
-    fun updateEmail(new: String){ // update email while using the sign up and sign in function
+    fun updateEmail(new: String) { // update email while using the sign up and sign in function
         _userUiState.value = _userUiState.value.copy(email = new)
     }
 

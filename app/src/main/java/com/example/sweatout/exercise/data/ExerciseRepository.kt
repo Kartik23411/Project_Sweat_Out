@@ -1,7 +1,7 @@
-package com.example.sweatout.workout.data
+package com.example.sweatout.exercise.data
 
 import com.example.sweatout.R
-import com.example.sweatout.workout.domain.Exercise
+import com.example.sweatout.exercise.domain.Exercise
 
 class ExerciseRepository {
 

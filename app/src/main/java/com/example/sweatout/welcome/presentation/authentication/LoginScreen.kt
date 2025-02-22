@@ -12,14 +12,14 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: WelcomeModuleViewModel = viewModel(),
     onSignUpClick: () -> Unit,
-    onAuthenticationSucceed:()->Unit
+    onAuthenticationSucceed: () -> Unit
 ) {
     BasicLoginAndSignUpScreen(
         modifier = modifier,
         onTextButtonClick = { onSignUpClick() },
         //onAuthenticationButtonClick = { viewModel.signInUserByEmail() },// take action as input
-    // to be performed when login succeed
-        onAuthenticationButtonClick = {email, password ->
+        // to be performed when login succeed
+        onAuthenticationButtonClick = { email, password ->
             onAuthenticationSucceed()
         },
         textButtonText = R.string.signup,
@@ -35,14 +35,14 @@ fun SignupScreen(
     modifier: Modifier = Modifier,
     viewModel: WelcomeModuleViewModel = viewModel(),
     onSignInClick: () -> Unit,
-    onAuthenticationSucceed:()->Unit
+    onAuthenticationSucceed: () -> Unit
 ) {
     BasicLoginAndSignUpScreen(
         modifier = modifier,
         onTextButtonClick = { onSignInClick() },
         //onAuthenticationButtonClick = { viewModel.signUpUserByEmail() },// take action as input
-    // to be performed when login succeed
-        onAuthenticationButtonClick = { email, password->
+        // to be performed when login succeed
+        onAuthenticationButtonClick = { email, password ->
             onAuthenticationSucceed()
         },
         textButtonText = R.string.signin,

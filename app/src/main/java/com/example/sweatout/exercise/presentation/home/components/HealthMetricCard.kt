@@ -1,4 +1,4 @@
-package com.example.sweatout.workout.presentation.home.components
+package com.example.sweatout.exercise.presentation.home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

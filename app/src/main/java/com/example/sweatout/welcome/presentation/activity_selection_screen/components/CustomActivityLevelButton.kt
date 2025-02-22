@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.sweatout.welcome.presentation.components.MyAppButton
-import com.example.sweatout.welcome.presentation.components.noRippleClickable
+import com.example.sweatout.core.presentation.MyAppButton
+import com.example.sweatout.core.presentation.noRippleClickable
 
 @Composable
 fun CustomActivityLevelButton(

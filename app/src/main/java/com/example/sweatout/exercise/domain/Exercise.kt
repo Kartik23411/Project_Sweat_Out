@@ -1,4 +1,4 @@
-package com.example.sweatout.workout.domain
+package com.example.sweatout.exercise.domain
 
 import androidx.annotation.DrawableRes
 

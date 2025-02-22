@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.sweatout.welcome.presentation.components.noRippleClickable
+import com.example.sweatout.core.presentation.noRippleClickable
 
 @Composable
 fun CustomTextButton(

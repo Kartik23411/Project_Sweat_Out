@@ -1,4 +1,4 @@
-package com.example.sweatout.workout.presentation.home
+package com.example.sweatout.exercise.presentation.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,10 +37,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sweatout.R
+import com.example.sweatout.exercise.presentation.home.components.ActivityGraph
+import com.example.sweatout.exercise.presentation.home.components.HealthMetricCard
+import com.example.sweatout.exercise.presentation.home.components.SectionSeparationText
 import com.example.sweatout.ui.theme.SweatOutTheme
-import com.example.sweatout.workout.presentation.home.components.ActivityGraph
-import com.example.sweatout.workout.presentation.home.components.HealthMetricCard
-import com.example.sweatout.workout.presentation.home.components.SectionSeparationText
 
 @Composable
 fun HomeScreen(

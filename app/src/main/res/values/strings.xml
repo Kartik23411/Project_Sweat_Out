@@ -53,4 +53,13 @@
     <string name="username">Username</string>
     <string name="profile_picture">Profile Picture</string>
     <string name="fill_details_error">Please provide the valid details</string>
+    <string name="congrats">Congratulations</string>
+    <string name="congrats_description">"You have completed the workout. "</string>
+    <string name="minutes">Minutes</string>
+    <string name="workouts">Workouts</string>
+    <string name="get_ready">Get Ready!</string>
+    <string name="pause_screen_text">TAKE A REST</string>
+    <string name="pause">Pause</string>
+    <string name="skip">Skip</string>
+    <string name="start">Start</string>
 </resources>

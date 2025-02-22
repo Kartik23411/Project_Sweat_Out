@@ -2,7 +2,6 @@ package com.example.sweatout.welcome.presentation.authentication.components
 
 import android.util.Log
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,8 +31,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.sweatout.R
-import com.example.sweatout.welcome.presentation.components.MyAppButton
-import com.example.sweatout.welcome.presentation.components.noRippleClickable
+import com.example.sweatout.core.presentation.MyAppButton
+import com.example.sweatout.core.presentation.noRippleClickable
 
 @Composable
 fun BasicLoginAndSignUpScreen(
@@ -91,7 +90,9 @@ fun BasicLoginAndSignUpScreen(
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
                 if (isLoginScreen) {
-                    CustomTextButton( R.string.forget_password, onClick =  {Log.e("authentication", "Forget click")})
+                    CustomTextButton(
+                        R.string.forget_password,
+                        onClick = { Log.e("authentication", "Forget click") })
                 }
                 else Spacer(Modifier.height(16.dp))
             }
@@ -105,7 +106,7 @@ fun BasicLoginAndSignUpScreen(
                         .noRippleClickable {}
                         .fillMaxWidth(fraction = 1f)
                         .height(50.dp),
-                onClick = { onAuthenticationButtonClick(email.value!!, password.value!!) },
+                onClick = { onAuthenticationButtonClick(email.value !!, password.value !!) },
                 textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 buttonColor = MaterialTheme.colorScheme.primaryContainer,
                 buttonText = stringResource(authenticationButtonText),
@@ -116,9 +117,9 @@ fun BasicLoginAndSignUpScreen(
         DividerLine()
 
         LoginOptionRow(
-            firstLoginAction = {Log.e("authentication", "Clicked 1")},
-            secondLoginAction = {Log.e("authentication", "Clicked 1")},
-            thirdLoginAction = {Log.e("authentication", "Clicked 1")},
+            firstLoginAction = { Log.e("authentication", "Clicked 1") },
+            secondLoginAction = { Log.e("authentication", "Clicked 1") },
+            thirdLoginAction = { Log.e("authentication", "Clicked 1") },
             modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 48.dp, vertical = 32.dp)
