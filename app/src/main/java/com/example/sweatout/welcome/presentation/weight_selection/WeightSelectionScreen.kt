@@ -56,11 +56,11 @@ fun WeightSelectionScreen(
         // buttons row
         WelcomeNavigationButtonRow(
             onCancel = {
-                Log.e("current Weight", "${state.currentIndex} my val:  ${user.weight}")
                 onCancelClick()
             },
             onProceed = {
                 viewModel.updateWeight(state.currentIndex)
+                Log.e("current Weight", "${state.currentIndex} my val:  ${viewModel.userUiState.value.weight}")
                 onProceedClick()
             },
         )

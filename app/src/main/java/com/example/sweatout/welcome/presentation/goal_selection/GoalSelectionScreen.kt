@@ -2,6 +2,7 @@ package com.example.sweatout.welcome.presentation.goal_selection
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +17,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
@@ -37,6 +39,7 @@ fun GoalSelectionScreen(
 ) {
     val listOfGoals by rememberSaveable { mutableStateOf(goalsList) }
     var checkedGoalList by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+    val context = LocalContext.current
 
     Column(
         modifier = modifier,
@@ -45,6 +48,7 @@ fun GoalSelectionScreen(
         CustomHeadlineText(textId = R.string.goal_selection_screen_headline)
         CustomAboutText(textId = R.string.goal_selection_screen_about_text)
 
+        // List of Goals
         LazyColumn(
             modifier = Modifier.fillMaxSize(.88f),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,7 +59,7 @@ fun GoalSelectionScreen(
                 GoalSelectionButton(
                     modifier = Modifier
                             .fillMaxWidth(.9f)
-                            .height(75.dp),
+                            .height(dimensionResource(R.dimen.goal_select_button_height)),
                     goal = goal
                 )
             }
@@ -63,13 +67,22 @@ fun GoalSelectionScreen(
 
         WelcomeNavigationButtonRow(
             onCancel = {
-                Log.e("age", viewModel.userUiState.value.goals.toString())
                 onCancelClick()
             },
             onProceed = {
                 checkedGoalList = getSelectedGoalList(listOfGoals)
-                viewModel.updateGoals(checkedGoalList)
-                onProceedClick()
+                if (checkedGoalList.isNotEmpty()){
+                    viewModel.updateGoals(checkedGoalList)
+                    onProceedClick()
+                }
+                else{
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.goal_select_screen_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                Log.e("Goals", viewModel.userUiState.value.goals.toString())
             },
         )
     }

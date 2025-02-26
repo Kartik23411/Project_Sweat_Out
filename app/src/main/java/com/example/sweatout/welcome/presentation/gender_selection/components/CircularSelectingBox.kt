@@ -16,7 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.example.sweatout.R
 
 @Composable
 fun CircularSelectingBox(
@@ -24,9 +25,9 @@ fun CircularSelectingBox(
     text: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean,
-    unselectedColor: Color,
-    selectedColor: Color,
-    textColor: Color,
+    unselectedColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    selectedColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
     onClick: () -> Unit
 ) {
     Column(
@@ -43,12 +44,12 @@ fun CircularSelectingBox(
         Icon(
             painter = icon,
             contentDescription = null,
-            modifier = Modifier.size(100.dp),
+            modifier = Modifier.size(dimensionResource(R.dimen.gender_select_button_icon_size)),
             tint = textColor
         )
         Text(
             text,
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = dimensionResource(R.dimen.gender_select_button_text_padding)),
             style = MaterialTheme.typography.labelLarge,
             color = textColor
         )

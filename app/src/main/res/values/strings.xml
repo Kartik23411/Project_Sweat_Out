@@ -62,4 +62,6 @@
     <string name="pause">Pause</string>
     <string name="skip">Skip</string>
     <string name="start">Start</string>
+    <string name="activity_select_screen_message">The activity level can\'t be blank</string>
+    <string name="goal_select_screen_message">Please select at least only one goal to proceed</string>
 </resources>

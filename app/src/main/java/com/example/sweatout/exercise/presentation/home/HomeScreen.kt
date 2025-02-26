@@ -44,7 +44,8 @@ import com.example.sweatout.ui.theme.SweatOutTheme
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onStartClick:()->Unit
 ) {
     Column(
         modifier = modifier
@@ -133,7 +134,7 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(15))
                     .padding(top = 24.dp, bottom = 16.dp)
-                    .clickable {},/*TODO() add the clicking functionality of navigation to exercise*/
+                    .clickable {onStartClick()},/*TODO() add the clicking functionality of navigation to exercise*/
             colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
             Row(
@@ -270,7 +271,8 @@ private fun HomeScreenPreview() {
         HomeScreen(
             modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(MaterialTheme.colorScheme.surface),
+            {}
         )
     }
 }

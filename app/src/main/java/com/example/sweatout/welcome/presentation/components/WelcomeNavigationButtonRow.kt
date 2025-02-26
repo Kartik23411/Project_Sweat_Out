@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.sweatout.R
@@ -25,7 +26,10 @@ fun WelcomeNavigationButtonRow(
     Row(
         modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .padding(
+                    horizontal = dimensionResource(R.dimen.welcome_module_navigation_button_horizontal_padding),
+                    vertical = dimensionResource(R.dimen.welcome_module_navigation_button_vertical_padding)
+                ),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         MyAppButton(
@@ -36,7 +40,7 @@ fun WelcomeNavigationButtonRow(
             buttonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
             textColor = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
-                    .height(50.dp)
+                    .height(dimensionResource(R.dimen.welcome_module_navigation_button_height))
                     .weight(1f)
                     .noRippleClickable {}
         )
@@ -49,7 +53,7 @@ fun WelcomeNavigationButtonRow(
             },
             buttonText = stringResource(R.string.proceed),
             modifier = Modifier
-                    .height(50.dp)
+                    .height(dimensionResource(R.dimen.welcome_module_navigation_button_height))
                     .weight(1f)
                     .noRippleClickable {}
         )

@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.sweatout.core.navigation.WorkOutAppNavHost
 import com.example.sweatout.exercise.presentation.workout.WorkoutCompleteScreen
 import com.example.sweatout.exercise.presentation.workout.WorkoutPauseScreen
 import com.example.sweatout.exercise.presentation.workout.WorkoutScreen
@@ -31,16 +32,16 @@ class MainActivity : ComponentActivity() {
                     MaterialTheme
                             .colorScheme.surface
                 ) { innerPadding ->
-//                    WorkOutAppNavHost(
-//                        navController = navController,
-//                        startDestination = "welcome_graph",
-//                        modifier = Modifier.padding(innerPadding),
-//                        welcomeViewModel = welcomeViewModel
-//                    )
+                    WorkOutAppNavHost(
+                        navController = navController,
+                        startDestination = "welcome_graph",
+                        modifier = Modifier.padding(innerPadding),
+                        welcomeViewModel = welcomeViewModel
+                    )
 //                    WorkoutCompleteScreen(Modifier.padding(innerPadding))
 //                    WorkoutStartScreen(modifier = Modifier.padding(innerPadding), onBackClick = {}, onTimeFinished = {})
 //                    WorkoutPauseScreen(onBackClick = {}, onStartClick = {})
-                    WorkoutScreen(modifier = Modifier.padding(innerPadding))
+//                    WorkoutScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }

@@ -13,18 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sweatout.R
 import com.example.sweatout.core.presentation.MyAppButton
 import com.example.sweatout.core.presentation.noRippleClickable
-import com.example.sweatout.ui.theme.SweatOutTheme
 
 @Composable
 fun GetStartedScreen(
@@ -50,8 +48,8 @@ fun GetStartedScreen(
                     .weight(0.4f)
                     .fillMaxWidth()
                     .padding(
-                        horizontal = 24.dp, vertical =
-                        16.dp
+                        horizontal = 24.dp,
+                        vertical = 16.dp
                     ),
             verticalArrangement = Arrangement.Bottom
         ) {
@@ -71,21 +69,12 @@ fun GetStartedScreen(
                 onClick = { onStartedClick() },
                 buttonText = stringResource(R.string.get_started),
                 modifier = Modifier
-                        .height(50.dp)
+                        .height(dimensionResource(R.dimen.welcome_module_navigation_button_height))
                         .fillMaxWidth(1f)
                         .noRippleClickable { },
                 textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 buttonColor = MaterialTheme.colorScheme.primaryContainer
             )
         }
-    }
-}
-
-@PreviewLightDark
-@Preview
-@Composable
-private fun WelcomeScreenPreview() {
-    SweatOutTheme {
-        GetStartedScreen(onStartedClick = {})
     }
 }

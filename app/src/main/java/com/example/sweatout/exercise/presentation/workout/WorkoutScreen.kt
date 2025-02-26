@@ -49,7 +49,9 @@ import com.example.sweatout.ui.theme.SweatOutTheme
 
 @Composable
 fun WorkoutScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSkipClick: () -> Unit,
+    onPauseClick: () -> Unit
 ) {
     // TODO add the pause and skip button functionality
     // TODO add the i button functionality
@@ -115,7 +117,7 @@ fun WorkoutScreen(
                     // timer display
                     TimerDisplay(
                         modifier = Modifier.weight(1f),
-                        widthFraction = .62f,
+                        widthFraction = .69f,
                         cardHeight = 90.dp,
                         totalTime = 100
                     )
@@ -126,8 +128,8 @@ fun WorkoutScreen(
                         modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 8.dp, vertical = 16.dp),
-                        onSkipClick = {},
-                        onPauseClick = {}
+                        onSkipClick = {onSkipClick()},
+                        onPauseClick = {onPauseClick()}
                     )
                 }
             }

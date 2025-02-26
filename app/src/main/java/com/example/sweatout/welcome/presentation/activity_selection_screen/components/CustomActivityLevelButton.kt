@@ -9,8 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import com.example.sweatout.R
 import com.example.sweatout.core.presentation.MyAppButton
 import com.example.sweatout.core.presentation.noRippleClickable
 
@@ -32,15 +33,15 @@ fun CustomActivityLevelButton(
             MaterialTheme.colorScheme.onSurfaceVariant,
         roundRadius = 20,
         modifier = modifier
-                .padding(vertical = 8.dp)
-                .height(60.dp)
+                .padding(vertical = dimensionResource(R.dimen.activity_level_button_padding))
+                .height(dimensionResource(R.dimen.activity_level_button_height))
                 .shadow(
-                    if (isSelected) 5.dp else 0.dp,
+                    if (isSelected) dimensionResource(R.dimen.activity_level_button_shadow) else dimensionResource(R.dimen._0dp),
                     shape = RoundedCornerShape(20),
                     ambientColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .3f)
                 )
                 .fillMaxWidth(1f)
                 .noRippleClickable {},
-        elevation = if (isSelected) 5.dp else 0.dp
+        elevation = if (isSelected) dimensionResource(R.dimen.activity_level_button_shadow) else dimensionResource(R.dimen._0dp)
     )
 }

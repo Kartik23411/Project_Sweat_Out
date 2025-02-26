@@ -46,11 +46,11 @@ fun AgeSelectionScreen(
 
         WelcomeNavigationButtonRow(
             onCancel = {
-                Log.e("age", "${state.currentIndex} my val:  ${viewModel.userUiState.value.age}")
                 onCancelClick()
             },
             onProceed = {
                 viewModel.updateAge(state.currentIndex)
+                Log.e("age", "${state.currentIndex} my val:  ${viewModel.userUiState.value.age}")
                 onProceedClick()
             },
         )

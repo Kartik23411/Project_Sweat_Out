@@ -49,11 +49,11 @@ fun HeightSelectionScreen(
         // buttons row
         WelcomeNavigationButtonRow(
             onCancel = {
-                Log.e("height", "${state.currentIndex} my val:  ${user.height}")
                 onCancelClick()
             },
             onProceed = {
                 viewModel.updateHeight(state.currentIndex)
+                Log.e("height", "${state.currentIndex} my val:  ${user.height}")
                 onProceedClick()
             },
         )

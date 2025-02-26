@@ -2,6 +2,7 @@ package com.example.sweatout.welcome.presentation.activity_selection_screen
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,7 +44,7 @@ fun ActivitySelectionScreen(
         CustomHeadlineText(textId = R.string.activity_selection_screen_headline)
         CustomAboutText(textId = R.string.activity_selection_screen_about)
 
-        // selectable buttons
+        // selectable activity level buttons
         Column(
             modifier = Modifier.fillMaxSize(.87f),
             verticalArrangement = Arrangement.Center,
@@ -96,17 +97,25 @@ fun ActivitySelectionScreen(
         // Navigation buttons row
         WelcomeNavigationButtonRow(
             onCancel = {
-                Log.e("activity Level", "${viewModel.userUiState.value.activityLevel}")
                 onCancelClick()
             },
             onProceed = {
-                viewModel.updateActivityLevel(
-                    getActivityLevel(
-                        context, isSelected1,
-                        isSelected2, isSelected3
-                    )
+                val activityLevel = getActivityLevel(
+                    context, isSelected1,
+                    isSelected2, isSelected3
                 )
-                onProceedClick()
+                if (activityLevel != ""){
+                    viewModel.updateActivityLevel(activityLevel)
+                    onProceedClick()
+                }
+                else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.activity_select_screen_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                Log.e("activity Level", "${viewModel.userUiState.value.activityLevel}")
             },
         )
     }

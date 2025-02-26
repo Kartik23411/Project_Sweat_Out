@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,7 +36,6 @@ fun GenderSelectionScreen(
     var isMaleSelected by remember { mutableStateOf(false) }
     var isFemaleSelected by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val user by viewModel.userUiState.collectAsState()
 
     Column(
         modifier = modifier,
@@ -58,10 +56,7 @@ fun GenderSelectionScreen(
                 icon = painterResource(R.drawable.baseline_male_24),
                 text = stringResource(R.string.male),
                 isSelected = isMaleSelected,
-                unselectedColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                selectedColor = MaterialTheme.colorScheme.primaryContainer,
-                textColor = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(200.dp),
+                modifier = Modifier.size(dimensionResource(R.dimen.gender_select_button_size)),
                 onClick = {
                     if (! isMaleSelected) {
                         isMaleSelected = true
@@ -74,10 +69,7 @@ fun GenderSelectionScreen(
                 icon = painterResource(R.drawable.baseline_female_24),
                 text = stringResource(R.string.female),
                 isSelected = isFemaleSelected,
-                unselectedColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                selectedColor = MaterialTheme.colorScheme.primaryContainer,
-                textColor = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(200.dp),
+                modifier = Modifier.size(dimensionResource(R.dimen.gender_select_button_size)),
                 onClick = {
                     if (! isFemaleSelected) {
                         isFemaleSelected = true
@@ -89,7 +81,6 @@ fun GenderSelectionScreen(
         // Proceed and cancel Button Row
         WelcomeNavigationButtonRow(
             onCancel = {
-                Log.e("gender", "${user.gender}")
                 onCancelClick()
             },
             onProceed = {
@@ -102,9 +93,9 @@ fun GenderSelectionScreen(
                     onProceedClick()
                 }
                 else {
-                    Toast.makeText(context, "Please select anyone option", Toast.LENGTH_SHORT)
-                            .show()
+                    Toast.makeText(context, "Please select anyone option", Toast.LENGTH_SHORT).show()
                 }
+                Log.e("gender", "${viewModel.userUiState.value.gender}")
             },
         )
     }
