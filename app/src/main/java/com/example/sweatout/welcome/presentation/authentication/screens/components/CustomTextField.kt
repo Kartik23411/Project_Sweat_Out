@@ -1,4 +1,4 @@
-package com.example.sweatout.welcome.presentation.authentication.components
+package com.example.sweatout.welcome.presentation.authentication.screens.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -8,24 +8,32 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.sweatout.core.navigation.WorkOutAppNavHost
-import com.example.sweatout.exercise.presentation.workout.WorkoutCompleteScreen
-import com.example.sweatout.exercise.presentation.workout.WorkoutPauseScreen
-import com.example.sweatout.exercise.presentation.workout.WorkoutScreen
-import com.example.sweatout.exercise.presentation.workout.WorkoutStartScreen
+import com.example.sweatout.core.session.UserSession
 import com.example.sweatout.ui.theme.SweatOutTheme
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var userSession: UserSession
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val welcomeViewModel: WelcomeModuleViewModel = viewModel()
+            val welcomeViewModel: WelcomeModuleViewModel = hiltViewModel()
             val navController = rememberNavController()
+            val currentUser by userSession.currentUserFlow.collectAsState(initial = null)
+            val startDestination = if (currentUser != null) "main_graph" else "welcome_graph"
             SweatOutTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(), containerColor =
@@ -34,14 +42,10 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     WorkOutAppNavHost(
                         navController = navController,
-                        startDestination = "welcome_graph",
+                        startDestination = startDestination,
                         modifier = Modifier.padding(innerPadding),
                         welcomeViewModel = welcomeViewModel
                     )
-//                    WorkoutCompleteScreen(Modifier.padding(innerPadding))
-//                    WorkoutStartScreen(modifier = Modifier.padding(innerPadding), onBackClick = {}, onTimeFinished = {})
-//                    WorkoutPauseScreen(onBackClick = {}, onStartClick = {})
-//                    WorkoutScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }

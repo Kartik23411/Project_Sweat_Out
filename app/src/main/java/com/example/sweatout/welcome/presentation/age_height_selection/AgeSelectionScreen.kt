@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.age_height_selection.components.Age_HeightPicker
@@ -19,7 +19,7 @@ import com.example.sweatout.welcome.presentation.components.rememberFWheelPicker
 @Composable
 fun AgeSelectionScreen(
     modifier: Modifier = Modifier,
-    viewModel: WelcomeModuleViewModel = viewModel(),
+    viewModel: WelcomeModuleViewModel = hiltViewModel(),
     onCancelClick: () -> Unit,
     onProceedClick: () -> Unit
 ) {
@@ -50,7 +50,7 @@ fun AgeSelectionScreen(
             },
             onProceed = {
                 viewModel.updateAge(state.currentIndex)
-                Log.e("age", "${state.currentIndex} my val:  ${viewModel.userUiState.value.age}")
+                Log.e("age", "${state.currentIndex} my val:  ${viewModel.userUiState.value.age} ${viewModel.userUiState.value.gender}")
                 onProceedClick()
             },
         )

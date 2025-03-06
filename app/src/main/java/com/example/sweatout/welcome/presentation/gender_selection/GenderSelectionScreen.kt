@@ -18,7 +18,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.components.CustomAboutText
@@ -29,7 +29,7 @@ import com.example.sweatout.welcome.presentation.gender_selection.components.Cir
 @Composable
 fun GenderSelectionScreen(
     modifier: Modifier = Modifier,
-    viewModel: WelcomeModuleViewModel = viewModel(),
+    viewModel: WelcomeModuleViewModel = hiltViewModel(),
     onCancelClick: () -> Unit,
     onProceedClick: () -> Unit
 ) {
@@ -95,7 +95,7 @@ fun GenderSelectionScreen(
                 else {
                     Toast.makeText(context, "Please select anyone option", Toast.LENGTH_SHORT).show()
                 }
-                Log.e("gender", "${viewModel.userUiState.value.gender}")
+                Log.e("gender", "${viewModel.userUiState.value.gender} ${viewModel.userUiState.value.name}")
             },
         )
     }

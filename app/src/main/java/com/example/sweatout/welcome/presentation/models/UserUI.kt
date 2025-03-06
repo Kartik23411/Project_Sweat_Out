@@ -1,5 +1,7 @@
 package com.example.sweatout.welcome.presentation.models
 
+import com.example.sweatout.welcome.domain.models.User
+
 data class UserUI(
     var name: String = "",
     var age: Int = 15,
@@ -14,3 +16,19 @@ data class UserUI(
     var nationality: String = "Indian",
     var nickName: String? = null
 )
+
+fun UserUI.toUser(): User {
+    return User(name = name,
+    age = age,
+    height = height,
+    weight = weight,
+    gender = gender.toString(),
+    imageUrl = imageUrl.toString(),
+    email = email.toString(),
+    phoneNo = phoneNo.toString(),
+    activityLevel = activityLevel.toString(),
+    goals = goals?: emptyList(),
+    nationality = nationality,
+    nickName = nickName.toString()
+    )
+}

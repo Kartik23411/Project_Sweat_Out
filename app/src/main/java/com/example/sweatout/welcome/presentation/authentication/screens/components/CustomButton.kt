@@ -1,4 +1,4 @@
-package com.example.sweatout.welcome.presentation.authentication.components
+package com.example.sweatout.welcome.presentation.authentication.screens.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image

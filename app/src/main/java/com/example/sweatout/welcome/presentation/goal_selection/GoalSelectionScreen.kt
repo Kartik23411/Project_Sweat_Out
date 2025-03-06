@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.components.CustomAboutText
@@ -33,7 +33,7 @@ import com.example.sweatout.welcome.presentation.models.goalsList
 @Composable
 fun GoalSelectionScreen(
     modifier: Modifier = Modifier,
-    viewModel: WelcomeModuleViewModel = viewModel(),
+    viewModel: WelcomeModuleViewModel = hiltViewModel(),
     onCancelClick: () -> Unit,
     onProceedClick: () -> Unit
 ) {
@@ -73,7 +73,9 @@ fun GoalSelectionScreen(
                 checkedGoalList = getSelectedGoalList(listOfGoals)
                 if (checkedGoalList.isNotEmpty()){
                     viewModel.updateGoals(checkedGoalList)
-                    onProceedClick()
+                    viewModel.updateDetails()
+                    Log.e("user", "${ viewModel.userUiState }")
+//                    onProceedClick()
                 }
                 else{
                     Toast.makeText(

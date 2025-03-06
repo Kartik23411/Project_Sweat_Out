@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    id("com.google.gms.google-services")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -42,6 +45,27 @@ android {
 
 dependencies {
 
+    implementation (libs.play.services.auth) // Example version, update accordingly
+
+    implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.rxjava2)
+    implementation(libs.androidx.datastore.preferences.rxjava3)
+
+    implementation (libs.gson)
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.analytics)
+
+    // hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
+
+
     // navigation viewmodel and livedata
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -67,4 +91,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+kapt {
+    correctErrorTypes = true
 }

@@ -19,9 +19,9 @@ import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.activity_selection_screen.ActivitySelectionScreen
 import com.example.sweatout.welcome.presentation.age_height_selection.AgeSelectionScreen
 import com.example.sweatout.welcome.presentation.age_height_selection.HeightSelectionScreen
-import com.example.sweatout.welcome.presentation.authentication.DetailsFillUpScreen
-import com.example.sweatout.welcome.presentation.authentication.LoginScreen
-import com.example.sweatout.welcome.presentation.authentication.SignupScreen
+import com.example.sweatout.welcome.presentation.authentication.screens.DetailsFillUpScreen
+import com.example.sweatout.welcome.presentation.authentication.screens.LoginScreen
+import com.example.sweatout.welcome.presentation.authentication.screens.SignupScreen
 import com.example.sweatout.welcome.presentation.gender_selection.GenderSelectionScreen
 import com.example.sweatout.welcome.presentation.get_started.GetStartedScreen
 import com.example.sweatout.welcome.presentation.goal_selection.GoalSelectionScreen
@@ -92,7 +92,7 @@ fun NavGraphBuilder.welcomeGraph(
             DetailsFillUpScreen(
                 onCancelClick = { navController.navigateUp() },
                 onProceedClick = { navController.navigate(Screen.Gender_Selection_Screen.route) },
-                viewModel = WelcomeModuleViewModel(),
+                viewModel = welcomeViewModel,
                 modifier = modifier
             )
         }
@@ -107,7 +107,7 @@ fun NavGraphBuilder.welcomeGraph(
             GenderSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
                 onProceedClick = { navController.navigate(Screen.Age_Selection_Screen.route) },
-                viewModel = WelcomeModuleViewModel(),
+                viewModel = welcomeViewModel,
                 modifier = modifier
             )
         }
@@ -122,7 +122,7 @@ fun NavGraphBuilder.welcomeGraph(
             AgeSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
                 onProceedClick = { navController.navigate(Screen.Height_Selection_Screen.route) },
-                viewModel = WelcomeModuleViewModel(),
+                viewModel = welcomeViewModel,
                 modifier = modifier
             )
         }
@@ -137,7 +137,7 @@ fun NavGraphBuilder.welcomeGraph(
             HeightSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
                 onProceedClick = { navController.navigate(Screen.Weight_Selection_Screen.route) },
-                viewModel = WelcomeModuleViewModel(),
+                viewModel = welcomeViewModel,
                 modifier = modifier
             )
         }
@@ -152,7 +152,7 @@ fun NavGraphBuilder.welcomeGraph(
             WeightSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
                 onProceedClick = { navController.navigate(Screen.Activity_Selection_Screen.route) },
-                viewModel = WelcomeModuleViewModel(),
+                viewModel = welcomeViewModel,
                 modifier = modifier
             )
         }
@@ -167,7 +167,7 @@ fun NavGraphBuilder.welcomeGraph(
             ActivitySelectionScreen(
                 onCancelClick = { navController.navigateUp() },
                 onProceedClick = { navController.navigate(Screen.Goal_Selection_Screen.route) },
-                viewModel = WelcomeModuleViewModel(),
+                viewModel = welcomeViewModel,
                 modifier = modifier
             )
         }
@@ -186,7 +186,7 @@ fun NavGraphBuilder.welcomeGraph(
                         popUpTo("welcome_graph") { inclusive = true }
                     }
                 },
-                viewModel = WelcomeModuleViewModel(),
+                viewModel = welcomeViewModel,
                 modifier = modifier
             )
         }

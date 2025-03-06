@@ -3,11 +3,11 @@
   <component name="deploymentTargetSelector">
     <selectionStates>
       <SelectionState runConfigName="app">
-        <option name="selectionMode" value="DIALOG" />
-        <DropdownSelection timestamp="2025-02-25T18:25:59.713660900Z">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2025-03-06T17:51:26.269759900Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=JNBUMRX4NVEIPVOB" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\karti\.android\avd\Pixel_9_API_35.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -23,30 +23,8 @@
                 <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\karti\.android\avd\Pixel_9_API_34.avd" />
               </handle>
             </Target>
-            <Target type="DEFAULT_BOOT">
-              <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\karti\.android\avd\Pixel_Tablet_API_35.avd" />
-              </handle>
-            </Target>
           </targets>
         </DialogSelection>
-      </SelectionState>
-      <SelectionState runConfigName="WelcomeScreenPreview">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="previewActivitySelection">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-02-02T19:37:28.266852900Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\karti\.android\avd\Pixel_9_API_34.avd" />
-            </handle>
-          </Target>
-        </DropdownSelection>
-        <DialogSelection />
-      </SelectionState>
-      <SelectionState runConfigName="PreviewActivitySelection">
-        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="ButtonPrevieww">
         <option name="selectionMode" value="DROPDOWN" />

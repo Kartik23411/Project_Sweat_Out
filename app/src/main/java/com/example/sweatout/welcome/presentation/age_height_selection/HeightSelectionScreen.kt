@@ -9,7 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.age_height_selection.components.Age_HeightPicker
@@ -21,7 +21,7 @@ import com.example.sweatout.welcome.presentation.components.rememberFWheelPicker
 @Composable
 fun HeightSelectionScreen(
     modifier: Modifier = Modifier,
-    viewModel: WelcomeModuleViewModel = viewModel(),
+    viewModel: WelcomeModuleViewModel = hiltViewModel(),
     onCancelClick: () -> Unit,
     onProceedClick: () -> Unit
 ) {

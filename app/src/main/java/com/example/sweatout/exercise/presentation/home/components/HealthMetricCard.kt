@@ -1,5 +1,16 @@
 package com.example.sweatout.exercise.presentation.home.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -14,15 +25,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.example.sweatout.R
+import com.example.sweatout.core.presentation.noRippleClickable
 import com.example.sweatout.ui.theme.SweatOutTheme
 import java.text.NumberFormat
 import java.util.Locale
@@ -33,18 +49,63 @@ fun HealthMetricCard(
     displayText: String,
     displayValue: Float,
     displayUnit: String,
-    displayIcon: Painter
+    displayIcon: Painter,
+    isExpanded: Boolean,
+    onCardClick: () -> Unit,
+    cardIndex: Int,
+    expandedContent: @Composable () -> Unit = { DefaultExpandedContent() }
 ) {
+    val localDensity = LocalDensity.current
+
+    // Animation values with improved elevation
+    // highlight-start
+    val elevationDp = if (isExpanded) 12.dp else 1.dp
+    // highlight-end
+
+    val cardHeight by animateFloatAsState(
+        targetValue = if (isExpanded) 200f else 100f,
+        animationSpec = tween(durationMillis = 300),
+        label = "Card Height"
+    )
+
+    val enterTransition = when (cardIndex) {
+        0 -> expandHorizontally(expandFrom = Alignment.End) + expandVertically(expandFrom = Alignment.Bottom) // bottom end
+        1 -> expandHorizontally(expandFrom = Alignment.Start) + expandVertically(expandFrom = Alignment.Bottom) // bottom start
+        2 -> expandHorizontally(expandFrom = Alignment.End) + expandVertically(expandFrom = Alignment.Top) // top end
+        3 -> expandHorizontally(expandFrom = Alignment.Start) + expandVertically(expandFrom = Alignment.Top) // top start
+        else -> expandHorizontally() + expandVertically()
+    }
+
+    val exitTransition = when (cardIndex) {
+        0 -> shrinkHorizontally(shrinkTowards = Alignment.End) + shrinkVertically(shrinkTowards = Alignment.Bottom)
+        1 -> shrinkHorizontally(shrinkTowards = Alignment.Start) + shrinkVertically(shrinkTowards = Alignment.Bottom)
+        2 -> shrinkHorizontally(shrinkTowards = Alignment.End) + shrinkVertically(shrinkTowards = Alignment.Top)
+        3 -> shrinkHorizontally(shrinkTowards = Alignment.Start) + shrinkVertically(shrinkTowards = Alignment.Top)
+        else -> shrinkHorizontally() + shrinkVertically()
+    }
+
     Card(
-        modifier = modifier.height(100.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(cardHeight.dp)
+            .graphicsLayer {
+                shadowElevation = with(localDensity) { elevationDp.toPx() }
+//                translationZ = with(localDensity) { elevationDp.toPx() }
+            }
+            .zIndex(if (isExpanded) 10f else 1f)  // Ensures expanded card appears on top
+            .noRippleClickable { onCardClick() },
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(15)
+        shape = RoundedCornerShape(15),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = elevationDp
+        )
     ) {
         // Name and Icon Row
+        if(!isExpanded)
         Row(
             modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, top = 4.dp, end = 8.dp),
+                .fillMaxWidth()
+                .padding(start = 8.dp, top = 4.dp, end = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -59,11 +120,13 @@ fun HealthMetricCard(
                 modifier = Modifier.size(35.dp)
             )
         }
-        // value and Unit Row
+
+        // Value and Unit Row
+        if (!isExpanded)
         Row(
             modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, bottom = 12.dp),
+                .fillMaxWidth()
+                .padding(start = 16.dp, bottom = if (isExpanded) 0.dp else 12.dp),
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.Start
         ) {
@@ -84,7 +147,31 @@ fun HealthMetricCard(
                 }
             )
         }
+
+        // Expanded content
+        AnimatedVisibility(
+            visible = isExpanded,
+            enter = enterTransition.plus(fadeIn(animationSpec = tween(800, 500, FastOutLinearInEasing))),
+            exit = exitTransition.plus(fadeOut(animationSpec = tween(800, 500, easing = FastOutSlowInEasing)))
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                expandedContent()
+            }
+        }
     }
+}
+
+@Composable
+private fun DefaultExpandedContent(){
+    Text(
+        text = "Expanded card content goes here. You can customize this with charts, additional metrics, or other information.",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurface
+    )
 }
 
 fun Float.formattedString(): String {
@@ -102,7 +189,7 @@ private fun HealthMetricCardPreview() {
     SweatOutTheme {
         HealthMetricCard(
             Modifier, "Blood Pressure", (160.1).toFloat(),
-            "cal", painterResource(R.drawable.calories_svgrepo_com)
+            "cal", painterResource(R.drawable.calories_svgrepo_com), false , {},1
         )
     }
 }

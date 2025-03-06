@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -12,12 +13,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.sweatout.R
 import com.example.sweatout.core.presentation.noRippleClickable
+import com.example.sweatout.exercise.presentation.components.BackButtonDialog
 import com.example.sweatout.exercise.presentation.workout.components.CircularCountDown
 import com.example.sweatout.exercise.presentation.workout.components.CustomText
 
@@ -27,13 +33,22 @@ fun WorkoutStartScreen(
     onBackClick: () -> Unit,
     onTimeFinished: () -> Unit
 ) {
+    var isDialogOpen by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
+        if (isDialogOpen){
+            BackButtonDialog(
+                modifier = Modifier.fillMaxWidth(.95f),
+                onCancel = {isDialogOpen = false},
+                onConfirm = {onBackClick()}
+            )
+        }
+
         IconButton(
-            onClick = { onBackClick() },
+            onClick = { isDialogOpen = true },
             modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.Start)
@@ -57,7 +72,7 @@ fun WorkoutStartScreen(
 
         CircularCountDown(
             Modifier.fillMaxHeight(.5f),
-            2,
+            totalTime = 10,
             onEnd = {
                 onTimeFinished()
             }

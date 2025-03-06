@@ -1,4 +1,4 @@
-package com.example.sweatout.welcome.presentation.authentication
+package com.example.sweatout.welcome.presentation.authentication.screens
 
 import android.net.Uri
 import android.widget.Toast
@@ -38,11 +38,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
-import com.example.sweatout.welcome.presentation.authentication.components.CustomTextField
+import com.example.sweatout.welcome.presentation.authentication.screens.components.CustomTextField
 import com.example.sweatout.welcome.presentation.components.CustomAboutText
 import com.example.sweatout.welcome.presentation.components.CustomHeadlineText
 import com.example.sweatout.welcome.presentation.components.WelcomeNavigationButtonRow
@@ -51,7 +51,7 @@ import com.example.sweatout.welcome.presentation.components.WelcomeNavigationBut
 fun DetailsFillUpScreen(
     onCancelClick: () -> Unit,
     onProceedClick: () -> Unit,
-    viewModel: WelcomeModuleViewModel = viewModel(),
+    viewModel: WelcomeModuleViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val name = rememberSaveable { mutableStateOf<String?>("") }
@@ -120,7 +120,7 @@ fun DetailsFillUpScreen(
             CustomTextField(
                 value = mobileNo,
                 onValueChange = { mobileNo.value = it },
-                placeHolder = stringResource(R.string.name),
+                placeHolder = stringResource(R.string.mobile),
                 imageVector = Icons.Default.Call,
                 isPassword = false,
                 keyboardType = KeyboardType.Phone,

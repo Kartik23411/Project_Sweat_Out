@@ -1,26 +1,26 @@
-package com.example.sweatout.welcome.presentation.authentication
+package com.example.sweatout.welcome.presentation.authentication.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sweatout.R
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
-import com.example.sweatout.welcome.presentation.authentication.components.BasicLoginAndSignUpScreen
+import com.example.sweatout.welcome.presentation.authentication.screens.components.BasicLoginAndSignUpScreen
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: WelcomeModuleViewModel = viewModel(),
+    viewModel: WelcomeModuleViewModel = hiltViewModel(),
     onSignUpClick: () -> Unit,
     onAuthenticationSucceed: () -> Unit
 ) {
     BasicLoginAndSignUpScreen(
         modifier = modifier,
+        viewModel = viewModel,
         onTextButtonClick = { onSignUpClick() },
-        //onAuthenticationButtonClick = { viewModel.signInUserByEmail() },// take action as input
-        // to be performed when login succeed
+        onAuthenticationSucceed = {onAuthenticationSucceed()},
         onAuthenticationButtonClick = { email, password ->
-            onAuthenticationSucceed()
+            viewModel.signInUserByEmail(email, password)
         },
         textButtonText = R.string.signup,
         textButtonIntroText = R.string.signup_text_intro,
@@ -33,17 +33,17 @@ fun LoginScreen(
 @Composable
 fun SignupScreen(
     modifier: Modifier = Modifier,
-    viewModel: WelcomeModuleViewModel = viewModel(),
+    viewModel: WelcomeModuleViewModel = hiltViewModel(),
     onSignInClick: () -> Unit,
     onAuthenticationSucceed: () -> Unit
 ) {
     BasicLoginAndSignUpScreen(
         modifier = modifier,
         onTextButtonClick = { onSignInClick() },
-        //onAuthenticationButtonClick = { viewModel.signUpUserByEmail() },// take action as input
-        // to be performed when login succeed
+        viewModel = viewModel,
+        onAuthenticationSucceed = {onAuthenticationSucceed()},
         onAuthenticationButtonClick = { email, password ->
-            onAuthenticationSucceed()
+            viewModel.signUpUserByEmail(email, password)
         },
         textButtonText = R.string.signin,
         textButtonIntroText = R.string.login_text_intro,
