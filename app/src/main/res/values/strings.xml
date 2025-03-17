@@ -65,4 +65,8 @@
     <string name="activity_select_screen_message">The activity level can\'t be blank</string>
     <string name="goal_select_screen_message">Please select at least only one goal to proceed</string>
     <string name="mobile">Mobile No</string>
+    <string name="select_workout_type">Select Workout Type</string>
+    <string name="create_new">+ Create</string>
+    <string name="Nav_Main">main_graph</string>
+    <string name="Nav_Welcome">welcome_graph</string>
 </resources>

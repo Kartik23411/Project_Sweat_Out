@@ -73,7 +73,7 @@ fun WorkoutCompleteScreen(
                     .fillMaxWidth(.87f)
                     .height(50.dp)
                     .noRippleClickable {},
-            onClick = {onHomeClick()},
+            onClick = { onHomeClick() },
             buttonText = stringResource(R.string.home),
         )
     }
@@ -92,7 +92,7 @@ fun SessionStatsRow(
                 .fillMaxWidth()
                 .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         WorkoutStatCard(
             modifier = Modifier
                     .height(80.dp)
@@ -101,7 +101,7 @@ fun SessionStatsRow(
             unitId = R.string.workouts
         )
 
-        Spacer(Modifier.width( 16.dp))
+        Spacer(Modifier.width(16.dp))
 
         WorkoutStatCard(
             modifier = Modifier
@@ -111,7 +111,7 @@ fun SessionStatsRow(
             unitId = R.string.unit_cal
         )
 
-        Spacer(Modifier.width( 16.dp))
+        Spacer(Modifier.width(16.dp))
 
         WorkoutStatCard(
             modifier = Modifier
@@ -126,7 +126,7 @@ fun SessionStatsRow(
 @Composable
 fun GreetingText() {
     CustomText(
-        textId= R.string.congrats,
+        textId = R.string.congrats,
         modifier = Modifier
                 .padding(vertical = 16.dp)
                 .fillMaxWidth(),
@@ -137,16 +137,7 @@ fun GreetingText() {
     CustomText(
         textId = R.string.congrats_description,
         modifier = Modifier.fillMaxWidth(),
-        textStyle = MaterialTheme.typography.bodyLarge ,
+        textStyle = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurface
     )
-}
-
-@Preview(showBackground = true)
-@PreviewLightDark
-@Composable
-private fun previewlal() {
-    SweatOutTheme {
-        WorkoutCompleteScreen(onHomeClick = {})
-    }
 }

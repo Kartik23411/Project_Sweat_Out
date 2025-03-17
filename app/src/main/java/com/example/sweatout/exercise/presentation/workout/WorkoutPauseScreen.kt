@@ -37,57 +37,57 @@ fun WorkoutPauseScreen(
 ) {
     var isDialogOpen by rememberSaveable { mutableStateOf(false) }
 
-        Column(
-            modifier = modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (isDialogOpen) {
+            BackButtonDialog(
+                modifier = Modifier.fillMaxWidth(.95f),
+                onConfirm = { onBackClick() },
+                onCancel = { isDialogOpen = false }
+            )
+        }
+        IconButton(
+            onClick = { isDialogOpen = true },
+            modifier = Modifier
+                    .fillMaxHeight(.1f)
+                    .padding(8.dp)
+                    .align(Alignment.Start)
+                    .noRippleClickable { }
         ) {
-            if (isDialogOpen){
-                BackButtonDialog(
-                    modifier = Modifier.fillMaxWidth(.95f),
-                    onConfirm = {onBackClick()},
-                    onCancel = {isDialogOpen = false}
-                )
-            }
-            IconButton(
-                onClick = { isDialogOpen = true },
-                modifier = Modifier
-                        .fillMaxHeight(.1f)
-                        .padding(8.dp)
-                        .align(Alignment.Start)
-                        .noRippleClickable { }
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-
-            Spacer(Modifier.height(100.dp))
-
-            CustomText(
-                textId = R.string.pause_screen_text,
-                textStyle = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                modifier = Modifier
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
             )
+        }
 
-            // stopwatch
-            CustomStopWatch(
-                modifier = Modifier.fillMaxSize(.7f)
-            )
+        Spacer(Modifier.height(100.dp))
+
+        CustomText(
+            textId = R.string.pause_screen_text,
+            textStyle = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.SemiBold),
+            color = MaterialTheme.colorScheme.primaryContainer,
+            modifier = Modifier
+        )
+
+        // stopwatch
+        CustomStopWatch(
+            modifier = Modifier.fillMaxSize(.7f)
+        )
 
 
-            Spacer(Modifier.height(120.dp))
+        Spacer(Modifier.height(120.dp))
 
-            // Start button
-            MyAppButton(
-                modifier = Modifier
-                        .fillMaxWidth(.87f)
-                        .height(50.dp)
-                        .noRippleClickable {},
-                onClick = { onStartClick() },
-                buttonText = stringResource(R.string.start),
-            )
+        // Start button
+        MyAppButton(
+            modifier = Modifier
+                    .fillMaxWidth(.87f)
+                    .height(50.dp)
+                    .noRippleClickable {},
+            onClick = { onStartClick() },
+            buttonText = stringResource(R.string.start),
+        )
     }
 }

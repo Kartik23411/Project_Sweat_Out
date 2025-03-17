@@ -16,8 +16,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sweatout.R
+import com.example.sweatout.ui.theme.SweatOutTheme
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.activity_selection_screen.components.CustomActivityLevelButton
 import com.example.sweatout.welcome.presentation.components.CustomAboutText
@@ -104,7 +106,7 @@ fun ActivitySelectionScreen(
                     context, isSelected1,
                     isSelected2, isSelected3
                 )
-                if (activityLevel != ""){
+                if (activityLevel != "") {
                     viewModel.updateActivityLevel(activityLevel)
                     onProceedClick()
                 }

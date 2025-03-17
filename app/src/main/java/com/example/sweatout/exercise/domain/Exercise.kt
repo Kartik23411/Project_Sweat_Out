@@ -5,12 +5,17 @@ import androidx.annotation.DrawableRes
 data class Exercise(
     val name: String,
     @DrawableRes val image: Int,
-    val howTo: String,
-    val muscleInvolved: String,
-    val calBurned: Int,
-    val isReputationNeeded: Boolean,
-    val noOfSets: Int,
-    val difficultyLevel: String,
-    val isEquipmentsNeeded: Boolean,
-    val equipmentsName: String
+    val instructions: String,
+    val muscleInvolved: List<String>,
+    val caloriesBurned: Int,
+    val isRepetitionBased: Boolean,
+    val sets: Int,
+    val durationSeconds: Int,
+    val difficulty: DifficultyLevel,
+    val isEquipmentRequired: Boolean,
+    val equipmentNames: List<String>
 )
+
+enum class DifficultyLevel {
+    EASY, MEDIUM, HARD
+}

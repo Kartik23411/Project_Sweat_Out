@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sweatout.core.data.firebase.FirebaseAuthManager
+import com.example.sweatout.core.data.supabase.SupabaseStorageManager
 import com.example.sweatout.core.session.UserSession
 import com.example.sweatout.welcome.presentation.authentication.mvi.AuthResult
 import com.example.sweatout.welcome.presentation.models.UserUI
@@ -17,8 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WelcomeModuleViewModel @Inject constructor(
-    private val userSession: UserSession
-): ViewModel() {
+    private val userSession: UserSession,
+    private val supabaseStorageManager: SupabaseStorageManager
+) : ViewModel() {
     private val _userUiState = MutableStateFlow(UserUI())
     val userUiState: StateFlow<UserUI> = _userUiState
 
@@ -69,12 +71,39 @@ class WelcomeModuleViewModel @Inject constructor(
         _userUiState.value = _userUiState.value.copy(email = new)
     }
 
+    fun uploadToSupabase(imageUri: Uri, onSuccess: () -> Unit = {}) {
+        _authResult.value = AuthResult(isLoading = true)
+        viewModelScope.launch {
+            val username = _userUiState.value.nickName
+            if (username.isNullOrBlank()) {
+                Log.e("Supabase", "username empty")
+                onSuccess()
+                return@launch
+            }
+            val result = supabaseStorageManager.uploadProfileImage(username, imageUri)
+            result.fold(
+                onSuccess = { publicUri ->
+                    _authResult.value = AuthResult(isLoading = false)
+                    _userUiState.value = _userUiState.value.copy(imageUrl = publicUri)
+                    Log.d("Supabase", "Upload Succeed")
+                    onSuccess()
+                },
+                onFailure = { error ->
+                    _authResult.value = AuthResult(isLoading = false)
+                    Log.e("Supabase", "Failed " + error.message)
+                    onSuccess()
+                }
+            )
+        }
+    }
+
+
     fun signInUserByEmail(email: String, password: String) {
         _authResult.value = AuthResult(isLoading = true)
         val firebaseAuthManager = FirebaseAuthManager()
-        firebaseAuthManager.signIn(email, password){result->
+        firebaseAuthManager.signIn(email, password) { result ->
             result.fold(
-                onSuccess = {user->
+                onSuccess = { user ->
                     viewModelScope.launch {
                         viewModelScope.launch {
                             userSession.saveCurrentUser(user)
@@ -83,9 +112,9 @@ class WelcomeModuleViewModel @Inject constructor(
                     _authResult.value = AuthResult(isSuccess = true, user = user)
                     Log.d("signup", "Signup Succeed")
                 },
-                onFailure = {error->
+                onFailure = { error ->
                     _authResult.value = AuthResult(isError = true, errorMessage = error.message)
-                    Log.e("Error","Signup failed", error)
+                    Log.e("Error", "Signup failed", error)
                 }
             )
         }
@@ -96,42 +125,66 @@ class WelcomeModuleViewModel @Inject constructor(
         _authResult.value = AuthResult(isLoading = true)
         val firebaseAuthManager = FirebaseAuthManager()
         val user = _userUiState.value.toUser()
-        firebaseAuthManager.signUp(email, password, user){result->
-            result.fold(
-                onSuccess = { newuser ->
-                    viewModelScope.launch {
-                        userSession.saveCurrentUser(newuser)
-                    }
-                    _authResult.value = AuthResult(isSuccess = true, user = newuser)
-                    Log.d("signup", "Signup Succeed")
-                },
-                onFailure = {error->
-                    _authResult.value = AuthResult(isError = true, errorMessage = error.message)
-                    Log.e("Error","Signup failed", error)
-                }
+        if (! checkPassword(password)) {
+            _authResult.value = AuthResult(
+                isError = true, errorMessage = "Password length should" +
+                        " be between 8 and 15 characters\n Password should contain lowercase, " +
+                        "uppercase, numbers and special character"
             )
         }
+        else
+            firebaseAuthManager.signUp(email, password, user) { result ->
+                result.fold(
+                    onSuccess = { newuser ->
+                        viewModelScope.launch {
+                            userSession.saveCurrentUser(newuser)
+                        }
+                        _authResult.value = AuthResult(isSuccess = true, user = newuser)
+                        Log.d("signup", "Signup Succeed")
+                    },
+                    onFailure = { error ->
+                        _authResult.value = AuthResult(isError = true, errorMessage = error.message)
+                        Log.e("Error", "Signup failed", error)
+                    }
+                )
+            }
         Log.e("signup", "sign up attempted by $user")
     }
 
-    fun updateDetails(){
+    fun updateDetails() {
         val firebaseAuthManager = FirebaseAuthManager()
         val updatedUser = _userUiState.value.toUser()
         _authResult.value = AuthResult(isLoading = true)
-        firebaseAuthManager.updateDetails(updatedUser){result->
+        firebaseAuthManager.updateDetails(updatedUser) { result ->
             result.fold(
-                onSuccess = {user->
+                onSuccess = { user ->
                     viewModelScope.launch {
                         userSession.saveCurrentUser(user)
                     }
                     _authResult.value = AuthResult(isSuccess = true, user = user)
                     Log.d("user", user.toString())
                 },
-                onFailure = {error->
+                onFailure = { error ->
                     _authResult.value = AuthResult(isError = true, errorMessage = error.message)
                     Log.e("UpdateUser", "Failed to update user details", error)
                 }
             )
         }
     }
+
+    fun toggleIsError() {
+        _authResult.value = _authResult.value.copy(isError = false)
+    }
+
+    fun checkPassword(password: String): Boolean {
+        if (password.length < 8 && password.length > 15) return false
+
+        val hasUpperCase = password.any { it.isUpperCase() }
+        val hasLowerCase = password.any { it.isLowerCase() }
+        val hasSpecialChar = password.any { it.isLetterOrDigit() }
+        val hasDigit = password.any { it.isDigit() }
+
+        return hasDigit && hasLowerCase && hasUpperCase && hasSpecialChar
+    }
+
 }

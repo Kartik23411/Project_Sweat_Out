@@ -45,6 +45,11 @@ android {
 
 dependencies {
 
+    // ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+
+
     implementation (libs.play.services.auth) // Example version, update accordingly
 
     implementation(libs.androidx.datastore.preferences.core)
@@ -62,6 +67,11 @@ dependencies {
 
     // hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.ui.test.android)
+    implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.foundation.layout.android)
     kapt(libs.hilt.android.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
 

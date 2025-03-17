@@ -39,11 +39,11 @@ fun WorkoutStartScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        if (isDialogOpen){
+        if (isDialogOpen) {
             BackButtonDialog(
                 modifier = Modifier.fillMaxWidth(.95f),
-                onCancel = {isDialogOpen = false},
-                onConfirm = {onBackClick()}
+                onCancel = { isDialogOpen = false },
+                onConfirm = { onBackClick() }
             )
         }
 
@@ -72,7 +72,7 @@ fun WorkoutStartScreen(
 
         CircularCountDown(
             Modifier.fillMaxHeight(.5f),
-            totalTime = 10,
+            totalTime = 1,
             onEnd = {
                 onTimeFinished()
             }

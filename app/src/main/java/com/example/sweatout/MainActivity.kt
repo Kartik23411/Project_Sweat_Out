@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.sweatout.core.navigation.WorkOutAppNavHost
@@ -33,18 +34,21 @@ class MainActivity : ComponentActivity() {
             val welcomeViewModel: WelcomeModuleViewModel = hiltViewModel()
             val navController = rememberNavController()
             val currentUser by userSession.currentUserFlow.collectAsState(initial = null)
-            val startDestination = if (currentUser != null) "main_graph" else "welcome_graph"
+            val context = LocalContext.current
+            val startDestination =
+                    if (currentUser?.goals.isNullOrEmpty()) context.getString(R.string.Nav_Welcome)
+                    else context.getString(R.string.Nav_Main)
             SweatOutTheme {
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(), containerColor =
-                    MaterialTheme
-                            .colorScheme.surface
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = MaterialTheme.colorScheme.surface
                 ) { innerPadding ->
                     WorkOutAppNavHost(
                         navController = navController,
                         startDestination = startDestination,
                         modifier = Modifier.padding(innerPadding),
-                        welcomeViewModel = welcomeViewModel
+                        welcomeViewModel = welcomeViewModel,
+                        context
                     )
                 }
             }

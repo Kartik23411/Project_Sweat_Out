@@ -1,6 +1,7 @@
 package com.example.sweatout.exercise.presentation.home
 
-import androidx.compose.foundation.Image
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,26 +45,54 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.example.sweatout.R
 import com.example.sweatout.exercise.presentation.WorkoutViewModal
 import com.example.sweatout.exercise.presentation.home.components.ActivityGraph
+import com.example.sweatout.exercise.presentation.home.components.DefaultBMICardContent
 import com.example.sweatout.exercise.presentation.home.components.HealthMetricCard
 import com.example.sweatout.exercise.presentation.home.components.SectionSeparationText
 import com.example.sweatout.ui.theme.SweatOutTheme
 
+fun calculateBmi(height: Int, weight: Int): Float {
+    val heightInMeter = height.toFloat() / 100.0
+    if (heightInMeter == 0.0)
+        return 0f
+    else
+        return (weight / (heightInMeter * heightInMeter)).toFloat()
+}
+
+fun getBmiCategory(bmi: Float): String {
+    if (bmi < 18.5) return "Under Weight"
+    else if (bmi > 18.5 && bmi < 24.9) return "Normal Weight"
+    else if (bmi > 25 && bmi < 29.9) return "Over Weight"
+    else return "Obesity"
+}
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onStartClick:()->Unit,
-    onNotificationIconClick:()->Unit = {},
+    onStartClick: () -> Unit,
+    onBotClick: () -> Unit,
+    onNotificationIconClick: () -> Unit = {},
     viewModel: WorkoutViewModal = hiltViewModel()
 ) {
-//    /todo implement the logic of changing of user profile image using Async image
-//    todo implement the health matrix based on the user data
+//    todo implement the change of calorie burned
+//    todo add the chatbot functionality
+
     val user by viewModel.userUi.collectAsState()
-    var expandedCardIndex by rememberSaveable { mutableStateOf(-1) }
+    var expandedCardIndex by rememberSaveable { mutableStateOf(- 1) }
+    var bmi by rememberSaveable { mutableStateOf(0f) }
+    var bmiCategory by rememberSaveable { mutableStateOf("") }
 
     val mainScrollState = rememberScrollState()
+    val context = LocalContext.current
+
+    LaunchedEffect(user?.weight, user?.height) {
+        bmi = calculateBmi(user?.height ?: 0, user?.weight ?: 0)
+        bmiCategory = getBmiCategory(bmi)
+    }
+
 
     Column(
         modifier = modifier
@@ -71,48 +102,54 @@ fun HomeScreen(
     ) {
         // Top bar row
         TopAppBar(
-            userName = user?.name ?: "user",
-            onNotificationButtonClick = {onNotificationIconClick()},
-            modifier = Modifier.fillMaxWidth()
+            userName = user?.nickName ?: "Kartik",
+            imageurl = user?.imageUrl ?: "",
+            onNotificationButtonClick = { onNotificationIconClick() },
+            modifier = Modifier.fillMaxWidth(),
+            context = context,
+            onChatBotClick = { onBotClick() }
         )
 
         // Start workout Card
-        StartWorkoutCard(modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(15))
-                .padding(top = 24.dp, bottom = 16.dp)
-                .clickable { onStartClick() })
+        StartWorkoutCard(
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(15))
+                    .padding(top = 24.dp, bottom = 16.dp)
+                    .clickable { onStartClick() })
 
         SectionSeparationText(
             textId = R.string.health_metrics,
             modifier = Modifier.padding(12.dp)
         )
 
-        // Health Stats - wrap in a fixed size box to prevent layout shifting
+        // Health Metrics
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(if (expandedCardIndex == -1) 240.dp else 220.dp)
+                    .fillMaxWidth()
+                    .height(if (expandedCardIndex == - 1) 240.dp else 220.dp)
         ) {
             Column(
                 modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
             ) {
-                if (expandedCardIndex == -1 || expandedCardIndex == 0 || expandedCardIndex == 1){
+                // Weight and Calorie Card
+                if (expandedCardIndex == - 1 || expandedCardIndex == 0 || expandedCardIndex == 1) {
                     Row(
                         modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 8.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        if (expandedCardIndex == -1 || expandedCardIndex == 0) {
+                        // Calorie Card
+                        if (expandedCardIndex == - 1 || expandedCardIndex == 0) {
                             HealthMetricCard(
                                 modifier = Modifier
                                         .weight(1f)
                                         .padding(end = if (expandedCardIndex == - 1) 8.dp else 0.dp),
                                 displayText = stringResource(R.string.cal_card),
-                                displayValue = 120f,
+                                displayValue = 0f,
                                 displayUnit = stringResource(R.string.unit_cal),
                                 isExpanded = expandedCardIndex == 0,
                                 onCardClick = {
@@ -122,7 +159,8 @@ fun HomeScreen(
                                 cardIndex = 0  // Card 1: Expansion from bottom end
                             )
                         }
-                        if (expandedCardIndex == -1 || expandedCardIndex == 1) {
+                        // Weight Card
+                        if (expandedCardIndex == - 1 || expandedCardIndex == 1) {
                             HealthMetricCard(
                                 modifier = Modifier
                                         .weight(1f)
@@ -135,36 +173,39 @@ fun HomeScreen(
                                     expandedCardIndex = if (expandedCardIndex == 1) - 1 else 1
                                 },
                                 displayIcon = painterResource(R.drawable.weight),
-                                cardIndex = 1  // Card 2: Expansion from bottom start
+                                cardIndex = 1
                             )
                         }
                     }
                 }
-
-                if (expandedCardIndex == -1 || expandedCardIndex == 2 || expandedCardIndex == 3){
+                // BMI and Height Card
+                if (expandedCardIndex == - 1 || expandedCardIndex == 2 || expandedCardIndex == 3) {
                     Row(
                         modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 8.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        if (expandedCardIndex == -1 || expandedCardIndex == 2) {
+                        // BMI Card
+                        if (expandedCardIndex == - 1 || expandedCardIndex == 2) {
                             HealthMetricCard(
                                 modifier = Modifier
                                         .weight(1f)
                                         .padding(end = if (expandedCardIndex == - 1) 8.dp else 0.dp),
                                 displayText = stringResource(R.string.bmi_card),
-                                displayValue = 19.38f,
+                                displayValue = bmi,
                                 displayUnit = stringResource(R.string.unit_bmi),
                                 isExpanded = expandedCardIndex == 2,
                                 onCardClick = {
                                     expandedCardIndex = if (expandedCardIndex == 2) - 1 else 2
                                 },
                                 displayIcon = painterResource(R.drawable.speedometer),
-                                cardIndex = 2  // Card 3: Expansion from top end
+                                cardIndex = 2,
+                                expandedContent = { DefaultBMICardContent(bmiCategory = bmiCategory) }
                             )
                         }
-                        if (expandedCardIndex == -1 || expandedCardIndex == 3) {
+                        // Height Card
+                        if (expandedCardIndex == - 1 || expandedCardIndex == 3) {
                             HealthMetricCard(
                                 modifier = Modifier
                                         .weight(1f)
@@ -183,7 +224,6 @@ fun HomeScreen(
                     }
                 }
             }
-
         }
 
         SectionSeparationText(
@@ -293,7 +333,10 @@ fun StartWorkoutCard(
 @Composable
 fun TopAppBar(
     userName: String,
+    imageurl: String,
+    onChatBotClick: () -> Unit,
     onNotificationButtonClick: () -> Unit,
+    context: Context,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -312,12 +355,13 @@ fun TopAppBar(
                 onClick = {},
                 colors = IconButtonDefaults.iconButtonColors(MaterialTheme.colorScheme.onSurface)
             ) {
-                Image(
+                AsyncImage(
                     contentScale = ContentScale.Crop,
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-//                fallback = painterResource(R.drawable.baseline_account_circle_24),
-//                placeholder = painterResource(R.drawable.baseline_account_circle_24),
-//                error = painterResource(R.drawable.baseline_account_circle_24),
+                    model = imageurl,
+//                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    fallback = painterResource(R.drawable.baseline_account_circle_24),
+                    placeholder = painterResource(R.drawable.baseline_account_circle_24),
+                    error = painterResource(R.drawable.baseline_account_circle_24),
                     contentDescription = "User Image",
                     modifier = Modifier
                             .clip(CircleShape)
@@ -337,9 +381,25 @@ fun TopAppBar(
                 userName = userName
             )
         }
+
+        // Chatbot button
+        IconButton(
+            onClick = {
+                onChatBotClick()
+                Toast.makeText(context, "Starting the bot", Toast.LENGTH_SHORT).show()
+            }
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.chat_bot_icon),
+                contentDescription = "Notification Icon",
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
         // Notification Button
         IconButton(
-            onClick = {onNotificationButtonClick()}
+            onClick = { onNotificationButtonClick() }
         ) {
             Icon(
                 painter = painterResource(R.drawable.notification),
@@ -360,6 +420,7 @@ private fun HomeScreenPreview() {
             modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface),
+            {},
             {}
         )
     }

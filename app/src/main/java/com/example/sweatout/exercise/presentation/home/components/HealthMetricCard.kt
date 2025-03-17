@@ -56,11 +56,7 @@ fun HealthMetricCard(
     expandedContent: @Composable () -> Unit = { DefaultExpandedContent() }
 ) {
     val localDensity = LocalDensity.current
-
-    // Animation values with improved elevation
-    // highlight-start
     val elevationDp = if (isExpanded) 12.dp else 1.dp
-    // highlight-end
 
     val cardHeight by animateFloatAsState(
         targetValue = if (isExpanded) 200f else 100f,
@@ -69,31 +65,31 @@ fun HealthMetricCard(
     )
 
     val enterTransition = when (cardIndex) {
-        0 -> expandHorizontally(expandFrom = Alignment.End) + expandVertically(expandFrom = Alignment.Bottom) // bottom end
-        1 -> expandHorizontally(expandFrom = Alignment.Start) + expandVertically(expandFrom = Alignment.Bottom) // bottom start
-        2 -> expandHorizontally(expandFrom = Alignment.End) + expandVertically(expandFrom = Alignment.Top) // top end
-        3 -> expandHorizontally(expandFrom = Alignment.Start) + expandVertically(expandFrom = Alignment.Top) // top start
+        0    -> expandHorizontally(expandFrom = Alignment.End) + expandVertically(expandFrom = Alignment.Bottom) // bottom end
+        1    -> expandHorizontally(expandFrom = Alignment.Start) + expandVertically(expandFrom = Alignment.Bottom) // bottom start
+        2    -> expandHorizontally(expandFrom = Alignment.End) + expandVertically(expandFrom = Alignment.Top) // top end
+        3    -> expandHorizontally(expandFrom = Alignment.Start) + expandVertically(expandFrom = Alignment.Top) // top start
         else -> expandHorizontally() + expandVertically()
     }
 
     val exitTransition = when (cardIndex) {
-        0 -> shrinkHorizontally(shrinkTowards = Alignment.End) + shrinkVertically(shrinkTowards = Alignment.Bottom)
-        1 -> shrinkHorizontally(shrinkTowards = Alignment.Start) + shrinkVertically(shrinkTowards = Alignment.Bottom)
-        2 -> shrinkHorizontally(shrinkTowards = Alignment.End) + shrinkVertically(shrinkTowards = Alignment.Top)
-        3 -> shrinkHorizontally(shrinkTowards = Alignment.Start) + shrinkVertically(shrinkTowards = Alignment.Top)
+        0    -> shrinkHorizontally(shrinkTowards = Alignment.End) + shrinkVertically(shrinkTowards = Alignment.Bottom)
+        1    -> shrinkHorizontally(shrinkTowards = Alignment.Start) + shrinkVertically(shrinkTowards = Alignment.Bottom)
+        2    -> shrinkHorizontally(shrinkTowards = Alignment.End) + shrinkVertically(shrinkTowards = Alignment.Top)
+        3    -> shrinkHorizontally(shrinkTowards = Alignment.Start) + shrinkVertically(shrinkTowards = Alignment.Top)
         else -> shrinkHorizontally() + shrinkVertically()
     }
 
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .height(cardHeight.dp)
-            .graphicsLayer {
-                shadowElevation = with(localDensity) { elevationDp.toPx() }
-//                translationZ = with(localDensity) { elevationDp.toPx() }
-            }
-            .zIndex(if (isExpanded) 10f else 1f)  // Ensures expanded card appears on top
-            .noRippleClickable { onCardClick() },
+                .fillMaxWidth()
+                .height(cardHeight.dp)
+                .graphicsLayer {
+                    shadowElevation = with(localDensity) { elevationDp.toPx() }
+                }
+                .zIndex(if (isExpanded) 10f else 1f)  // For ensuring that the expanded card will
+                // be shown on the top
+                .noRippleClickable { onCardClick() },
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(15),
         elevation = CardDefaults.cardElevation(
@@ -101,63 +97,79 @@ fun HealthMetricCard(
         )
     ) {
         // Name and Icon Row
-        if(!isExpanded)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp, top = 4.dp, end = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = displayText,
-                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Normal),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Icon(
-                painter = displayIcon,
-                contentDescription = "Display Icon",
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = .75f),
-                modifier = Modifier.size(35.dp)
-            )
-        }
+        if (! isExpanded)
+            Row(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, top = 4.dp, end = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = displayText,
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Normal),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Icon(
+                    painter = displayIcon,
+                    contentDescription = "Display Icon",
+                    tint = MaterialTheme.colorScheme.primary.copy(alpha = .75f),
+                    modifier = Modifier.size(35.dp)
+                )
+            }
 
         // Value and Unit Row
-        if (!isExpanded)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, bottom = if (isExpanded) 0.dp else 12.dp),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Text(
-                text = displayValue.formattedString(),
-                style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Box(
-                contentAlignment = Alignment.Center,
-                content = {
-                    Text(
-                        modifier = Modifier.padding(start = 4.dp),
-                        text = displayUnit,
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f)
-                    )
-                }
-            )
-        }
+        if (! isExpanded)
+            Row(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, bottom = if (isExpanded) 0.dp else 12.dp),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
+                    text = displayValue.formattedString(),
+                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    content = {
+                        Text(
+                            modifier = Modifier.padding(start = 4.dp),
+                            text = displayUnit,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f)
+                        )
+                    }
+                )
+            }
 
         // Expanded content
         AnimatedVisibility(
             visible = isExpanded,
-            enter = enterTransition.plus(fadeIn(animationSpec = tween(800, 500, FastOutLinearInEasing))),
-            exit = exitTransition.plus(fadeOut(animationSpec = tween(800, 500, easing = FastOutSlowInEasing)))
+            enter = enterTransition.plus(
+                fadeIn(
+                    animationSpec = tween(
+                        800,
+                        500,
+                        FastOutLinearInEasing
+                    )
+                )
+            ),
+            exit = exitTransition.plus(
+                fadeOut(
+                    animationSpec = tween(
+                        800,
+                        500,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+            )
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
+                        .fillMaxWidth()
+                        .padding(8.dp)
             ) {
                 expandedContent()
             }
@@ -166,9 +178,19 @@ fun HealthMetricCard(
 }
 
 @Composable
-private fun DefaultExpandedContent(){
+private fun DefaultExpandedContent() {
     Text(
         text = "Expanded card content goes here. You can customize this with charts, additional metrics, or other information.",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+}
+
+@Composable
+fun DefaultBMICardContent(modifier: Modifier = Modifier, bmiCategory: String) {
+    Text(
+        modifier = modifier.padding(start = 16.dp, top = 16.dp),
+        text = bmiCategory,
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurface
     )
@@ -189,7 +211,7 @@ private fun HealthMetricCardPreview() {
     SweatOutTheme {
         HealthMetricCard(
             Modifier, "Blood Pressure", (160.1).toFloat(),
-            "cal", painterResource(R.drawable.calories_svgrepo_com), false , {},1
+            "cal", painterResource(R.drawable.calories_svgrepo_com), false, {}, 1
         )
     }
 }

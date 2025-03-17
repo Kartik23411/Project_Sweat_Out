@@ -1,5 +1,6 @@
 package com.example.sweatout.core.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -12,16 +13,15 @@ fun WorkOutAppNavHost(
     navController: NavHostController,
     startDestination: String,
     modifier: Modifier = Modifier,
-    welcomeViewModel: WelcomeModuleViewModel = viewModel()
+    welcomeViewModel: WelcomeModuleViewModel = viewModel(),
+    context: Context
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier
     ) {
-//            if(startDestination == "welcome_graph")
-        welcomeGraph(navController, welcomeViewModel, Modifier)
-//            else
-        HomeGraph(navController, Modifier)  // This includes `mod1` and `mod2`
+        welcomeGraph(navController, welcomeViewModel, Modifier, context)
+        HomeGraph(navController, Modifier, context)
     }
 }

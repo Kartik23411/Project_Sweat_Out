@@ -2,6 +2,9 @@ package com.example.sweatout.welcome.presentation.authentication.screens.compone
 
 import android.util.Log
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,6 +45,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.sweatout.R
+import com.example.sweatout.core.presentation.ErrorDialog
 import com.example.sweatout.core.presentation.ThreeBounceAnimation
 import com.example.sweatout.core.presentation.noRippleClickable
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
@@ -52,7 +56,7 @@ fun BasicLoginAndSignUpScreen(
     viewModel: WelcomeModuleViewModel,
     onTextButtonClick: () -> Unit,
     onAuthenticationButtonClick: (String, String) -> Unit,
-    onAuthenticationSucceed:()->Unit,
+    onAuthenticationSucceed: () -> Unit,
     @StringRes authenticationButtonText: Int,
     @StringRes textButtonText: Int,
     @StringRes headlineText: Int,
@@ -65,14 +69,39 @@ fun BasicLoginAndSignUpScreen(
     val authState by viewModel.authResult.collectAsState()
     var isLoading = authState.isLoading
     val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(authState.isSuccess) {
         if (authState.isSuccess)
             onAuthenticationSucceed()
     }
+
+    LaunchedEffect(authState.isError) {
+        if (authState.isError) {
+            showDialog = true
+        }
+    }
+
     Column(
         modifier = modifier,
     ) {
+
+        AnimatedVisibility(
+            visible = showDialog,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            ErrorDialog(
+                Modifier.fillMaxWidth(.85f),
+                onDismiss = {
+                    showDialog = false
+                    viewModel.toggleIsError()
+                },
+                errorType = "Authentication Error",
+                errorMessage = authState.errorMessage.toString()
+            )
+        }
+
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = null,
@@ -130,7 +159,7 @@ fun BasicLoginAndSignUpScreen(
                         .fillMaxWidth(fraction = 1f)
                         .height(50.dp),
                 onClick = {
-                    onAuthenticationButtonClick(email.value!!, password.value!!)
+                    onAuthenticationButtonClick(email.value !!, password.value !!)
                 },
                 textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 buttonColor = MaterialTheme.colorScheme.primaryContainer,
@@ -152,7 +181,9 @@ fun BasicLoginAndSignUpScreen(
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .noRippleClickable { onTextButtonClick() },
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -162,8 +193,7 @@ fun BasicLoginAndSignUpScreen(
                     Log.e("authentication", "Signup button error")
                     onTextButtonClick()
                 },
-                color =
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = .6f)
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .6f)
             )
         }
 
@@ -230,7 +260,7 @@ fun MyButton(
     border: BorderStroke? = null,
     elevation: Dp = 0.dp,
     style: TextStyle = MaterialTheme.typography.labelLarge,
-    isLoading:Boolean
+    isLoading: Boolean
 ) {
     Button(
         onClick = { onClick() },
@@ -251,4 +281,4 @@ fun MyButton(
             )
         }
     }
-    }
+}

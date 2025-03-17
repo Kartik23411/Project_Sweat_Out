@@ -9,18 +9,18 @@ data class SessionResultUi(
     val streak: String = "0 days"
 )
 
-fun Int.toCal(): String{
+fun Int.toCal(): String {
     if (this > 999) return "$this kcal"
     else return "$this cal"
 }
 
-fun Int.toMinutes(): String{
-    val hours = this/60
-    val remainingMin = this%60
+fun Int.toMinutes(): String {
+    val hours = this / 60
+    val remainingMin = this % 60
     if (hours > 0) return "$hours H $remainingMin Min"
     else return "$this Min"
 }
 
-fun Int.toDays(): String{
+fun Int.toDays(): String {
     return "$this days"
 }

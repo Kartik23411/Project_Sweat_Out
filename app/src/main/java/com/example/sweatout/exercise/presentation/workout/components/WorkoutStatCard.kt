@@ -18,16 +18,20 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun WorkoutStatCard(
     modifier: Modifier = Modifier,
-    @StringRes unitId:  Int,
-    stateData:  String,
+    @StringRes unitId: Int,
+    stateData: String,
 ) {
     Card(
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerHigh.copy
-            (alpha = .6f)),
+        colors = CardDefaults.cardColors(
+            MaterialTheme.colorScheme.surfaceContainerHigh.copy
+                (alpha = .6f)
+        ),
         modifier = modifier
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp),
+            modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

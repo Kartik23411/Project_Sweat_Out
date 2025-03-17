@@ -60,7 +60,10 @@ fun WeightSelectionScreen(
             },
             onProceed = {
                 viewModel.updateWeight(state.currentIndex)
-                Log.e("current Weight", "${state.currentIndex} my val:  ${viewModel.userUiState.value.weight}")
+                Log.e(
+                    "current Weight",
+                    "${state.currentIndex} my val:  ${viewModel.userUiState.value.weight}"
+                )
                 onProceedClick()
             },
         )

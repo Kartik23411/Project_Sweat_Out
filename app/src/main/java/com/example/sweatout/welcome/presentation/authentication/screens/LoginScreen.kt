@@ -18,7 +18,7 @@ fun LoginScreen(
         modifier = modifier,
         viewModel = viewModel,
         onTextButtonClick = { onSignUpClick() },
-        onAuthenticationSucceed = {onAuthenticationSucceed()},
+        onAuthenticationSucceed = { onAuthenticationSucceed() },
         onAuthenticationButtonClick = { email, password ->
             viewModel.signInUserByEmail(email, password)
         },
@@ -41,7 +41,7 @@ fun SignupScreen(
         modifier = modifier,
         onTextButtonClick = { onSignInClick() },
         viewModel = viewModel,
-        onAuthenticationSucceed = {onAuthenticationSucceed()},
+        onAuthenticationSucceed = { onAuthenticationSucceed() },
         onAuthenticationButtonClick = { email, password ->
             viewModel.signUpUserByEmail(email, password)
         },

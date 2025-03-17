@@ -30,10 +30,14 @@ fun GoalSelectionButton(
         textColor = MaterialTheme.colorScheme.onSurfaceVariant,
         buttonText = goal?.text ?: "",
         roundRadius = 20,
-        elevation = if (goal?.isChecked?.value == true) dimensionResource(R.dimen.goal_select_button_elevation) else dimensionResource(R.dimen._0dp),
+        elevation = if (goal?.isChecked?.value == true) dimensionResource(R.dimen.goal_select_button_elevation)
+        else dimensionResource(
+            R.dimen._0dp
+        ),
         border = if (goal?.isChecked?.value == true) BorderStroke(
             width = dimensionResource(R.dimen.goal_select_button_border_width),
             color = MaterialTheme.colorScheme.primaryContainer
-        ) else null
+        )
+        else null
     )
 }

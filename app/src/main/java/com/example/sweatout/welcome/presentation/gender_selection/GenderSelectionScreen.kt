@@ -93,9 +93,13 @@ fun GenderSelectionScreen(
                     onProceedClick()
                 }
                 else {
-                    Toast.makeText(context, "Please select anyone option", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please select anyone option", Toast.LENGTH_SHORT)
+                            .show()
                 }
-                Log.e("gender", "${viewModel.userUiState.value.gender} ${viewModel.userUiState.value.name}")
+                Log.e(
+                    "gender",
+                    "${viewModel.userUiState.value.gender} ${viewModel.userUiState.value.name}"
+                )
             },
         )
     }

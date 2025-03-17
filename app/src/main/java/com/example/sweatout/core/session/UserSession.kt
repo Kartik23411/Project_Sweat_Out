@@ -18,20 +18,20 @@ class UserSession @Inject constructor(
     private val gson = Gson()
     private val USER_KEY = stringPreferencesKey("current_user")
 
-    val currentUserFlow: Flow<User?> = dataStore.data.map {preferences->
-        preferences[USER_KEY].let {json->
+    val currentUserFlow: Flow<User?> = dataStore.data.map { preferences ->
+        preferences[USER_KEY].let { json ->
             gson.fromJson(json, User::class.java)
         }
     }
 
-    suspend fun saveCurrentUser(user: User){
-        dataStore.edit { preferences->
+    suspend fun saveCurrentUser(user: User) {
+        dataStore.edit { preferences ->
             preferences[USER_KEY] = gson.toJson(user)
         }
     }
 
-    suspend fun clearData(){
-        dataStore.edit { preferences->
+    suspend fun clearData() {
+        dataStore.edit { preferences ->
             preferences.remove(USER_KEY)
         }
     }

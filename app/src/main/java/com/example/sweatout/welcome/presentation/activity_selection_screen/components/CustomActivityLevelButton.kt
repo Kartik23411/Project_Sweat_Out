@@ -36,12 +36,18 @@ fun CustomActivityLevelButton(
                 .padding(vertical = dimensionResource(R.dimen.activity_level_button_padding))
                 .height(dimensionResource(R.dimen.activity_level_button_height))
                 .shadow(
-                    if (isSelected) dimensionResource(R.dimen.activity_level_button_shadow) else dimensionResource(R.dimen._0dp),
+                    if (isSelected) dimensionResource(R.dimen.activity_level_button_shadow)
+                    else dimensionResource(
+                        R.dimen._0dp
+                    ),
                     shape = RoundedCornerShape(20),
                     ambientColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .3f)
                 )
                 .fillMaxWidth(1f)
                 .noRippleClickable {},
-        elevation = if (isSelected) dimensionResource(R.dimen.activity_level_button_shadow) else dimensionResource(R.dimen._0dp)
+        elevation = if (isSelected) dimensionResource(R.dimen.activity_level_button_shadow)
+        else dimensionResource(
+            R.dimen._0dp
+        )
     )
 }

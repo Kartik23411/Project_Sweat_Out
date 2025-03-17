@@ -19,8 +19,9 @@ sealed class Screen(val route: String) {
 
     // workout
     object WorkoutHome : Screen("home/home")
-    object WorkoutScreen: Screen("home/workout")
-    object WorkoutStartScreen: Screen("home/workout_start")
-    object WorkoutPauseScreen: Screen("home/workout_pause")
-    object WorkoutCompleteScreen: Screen("home/workout_complete")
+    object WorkoutScreen : Screen("home/workout")
+    object WorkoutStartScreen : Screen("home/workout_start")
+    object WorkoutPauseScreen : Screen("home/workout_pause")
+    object WorkoutCompleteScreen : Screen("home/workout_complete")
+    object WorkoutTypeSelectScreen : Screen("home/workout_type_select")
 }

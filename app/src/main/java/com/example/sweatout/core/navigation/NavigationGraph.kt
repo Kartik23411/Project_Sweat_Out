@@ -1,5 +1,6 @@
 package com.example.sweatout.core.navigation
 
+import android.content.Context
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -10,11 +11,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.sweatout.R
 import com.example.sweatout.exercise.presentation.home.HomeScreen
 import com.example.sweatout.exercise.presentation.workout.WorkoutCompleteScreen
 import com.example.sweatout.exercise.presentation.workout.WorkoutPauseScreen
 import com.example.sweatout.exercise.presentation.workout.WorkoutScreen
 import com.example.sweatout.exercise.presentation.workout.WorkoutStartScreen
+import com.example.sweatout.exercise.presentation.workout.WorkoutTypeSelectionScreen
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import com.example.sweatout.welcome.presentation.activity_selection_screen.ActivitySelectionScreen
 import com.example.sweatout.welcome.presentation.age_height_selection.AgeSelectionScreen
@@ -31,16 +34,36 @@ import com.example.sweatout.welcome.presentation.weight_selection.WeightSelectio
 fun NavGraphBuilder.welcomeGraph(
     navController: NavController,
     welcomeViewModel: WelcomeModuleViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    context: Context
 ) {
-    navigation(startDestination = Screen.Get_Started_Screen.route, route = "welcome_graph") {
+    navigation(
+        startDestination = Screen.Get_Started_Screen.route,
+        route = context.getString(R.string.Nav_Welcome)
+    ) {
 
         composable(
             Screen.Get_Started_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             GetStartedScreen(
                 modifier = modifier,
@@ -50,18 +73,34 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Login_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             LoginScreen(
                 modifier = modifier,
                 viewModel = welcomeViewModel,
                 onSignUpClick = { navController.navigate(Screen.Sign_Up_Screen.route) },
                 onAuthenticationSucceed = {
-                    navController.navigate("main_graph") {
-                        popUpTo("welcome_graph") { inclusive = true }
+                    navController.navigate(context.getString(R.string.Nav_Main)) {
+                        popUpTo(context.getString(R.string.Nav_Welcome)) { inclusive = true }
                     }
                 }
             )
@@ -69,10 +108,26 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Sign_Up_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             SignupScreen(
                 modifier = modifier,
@@ -84,10 +139,26 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Fill_Details_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             DetailsFillUpScreen(
                 onCancelClick = { navController.navigateUp() },
@@ -99,10 +170,26 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Gender_Selection_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             GenderSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
@@ -114,10 +201,26 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Age_Selection_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             AgeSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
@@ -129,10 +232,26 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Height_Selection_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             HeightSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
@@ -144,10 +263,26 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Weight_Selection_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             WeightSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
@@ -159,10 +294,26 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Activity_Selection_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             ActivitySelectionScreen(
                 onCancelClick = { navController.navigateUp() },
@@ -174,16 +325,32 @@ fun NavGraphBuilder.welcomeGraph(
 
         composable(
             Screen.Goal_Selection_Screen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             GoalSelectionScreen(
                 onCancelClick = { navController.navigateUp() },
                 onProceedClick = {
-                    navController.navigate("main_graph") {
-                        popUpTo("welcome_graph") { inclusive = true }
+                    navController.navigate(context.getString(R.string.Nav_Main)) {
+                        popUpTo(context.getString(R.string.Nav_Welcome)) { inclusive = true }
                     }
                 },
                 viewModel = welcomeViewModel,
@@ -195,74 +362,189 @@ fun NavGraphBuilder.welcomeGraph(
 
 fun NavGraphBuilder.HomeGraph(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    context: Context
 ) {
-    navigation(startDestination = Screen.WorkoutHome.route, route = "main_graph") {
+    navigation(
+        startDestination = Screen.WorkoutHome.route,
+        route = context.getString(R.string.Nav_Main)
+    ) {
         composable(
             Screen.WorkoutHome.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             HomeScreen(
                 modifier = modifier,
-                onStartClick = {navController.navigate(Screen.WorkoutStartScreen.route)}
+                onStartClick = { navController.navigate(Screen.WorkoutTypeSelectScreen.route) },
+                onBotClick = {}
+            )
+        }
+
+        composable(
+            Screen.WorkoutTypeSelectScreen.route,
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
+        ) {
+            WorkoutTypeSelectionScreen(
+                modifier = modifier,
+                onStartClick = { navController.navigate(Screen.WorkoutStartScreen.route) }
             )
         }
 
         composable(
             Screen.WorkoutScreen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             WorkoutScreen(
                 modifier = modifier,
-                onSkipClick = {navController.navigate(Screen.WorkoutCompleteScreen.route)},
-                onPauseClick = {navController.navigate(Screen.WorkoutPauseScreen.route)}
+                onSkipClick = { navController.navigate(Screen.WorkoutCompleteScreen.route) },
+                onPauseClick = { navController.navigate(Screen.WorkoutPauseScreen.route) },
+//                onWorkoutComplete = {navController.navigate(Screen.WorkoutCompleteScreen.route)}
             )
         }
 
         composable(
             Screen.WorkoutStartScreen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             WorkoutStartScreen(
                 modifier,
                 onBackClick = { navController.navigateUp() },
-                onTimeFinished = {navController.navigate(Screen.WorkoutScreen.route)}
+                onTimeFinished = { navController.navigate(Screen.WorkoutScreen.route) }
             )
         }
 
         composable(
             Screen.WorkoutPauseScreen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             WorkoutPauseScreen(
                 modifier,
                 onBackClick = { navController.navigate(Screen.WorkoutHome.route) },
-                onStartClick = {navController.navigate(Screen.WorkoutScreen.route)}
+                onStartClick = { navController.navigate(Screen.WorkoutScreen.route) }
             )
         }
 
         composable(
             Screen.WorkoutCompleteScreen.route,
-            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) },
-            popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn(animationSpec = tween(durationMillis = 500)) },
-            popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(animationSpec = tween(durationMillis = 500)) }
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { - 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { - 1000 }) + fadeIn(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut(
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         ) {
             WorkoutCompleteScreen(
                 modifier,
-                onHomeClick = {navController.navigate(Screen.WorkoutHome.route)}
+                onHomeClick = { navController.navigate(Screen.WorkoutHome.route) }
             )
         }
     }

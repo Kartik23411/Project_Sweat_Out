@@ -50,7 +50,10 @@ fun AgeSelectionScreen(
             },
             onProceed = {
                 viewModel.updateAge(state.currentIndex)
-                Log.e("age", "${state.currentIndex} my val:  ${viewModel.userUiState.value.age} ${viewModel.userUiState.value.gender}")
+                Log.e(
+                    "age",
+                    "${state.currentIndex} my val:  ${viewModel.userUiState.value.age} ${viewModel.userUiState.value.gender}"
+                )
                 onProceedClick()
             },
         )

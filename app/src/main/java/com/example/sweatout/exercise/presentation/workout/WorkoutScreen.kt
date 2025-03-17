@@ -1,5 +1,6 @@
 package com.example.sweatout.exercise.presentation.workout
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -18,13 +19,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -36,16 +44,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.sweatout.R
 import com.example.sweatout.core.presentation.MyAppButton
 import com.example.sweatout.core.presentation.noRippleClickable
 import com.example.sweatout.exercise.presentation.workout.components.LinearCountDown
-import com.example.sweatout.ui.theme.SweatOutTheme
 
 @Composable
 fun WorkoutScreen(
@@ -53,11 +57,13 @@ fun WorkoutScreen(
     onSkipClick: () -> Unit,
     onPauseClick: () -> Unit
 ) {
-    // TODO add the pause and skip button functionality
+    // TODO add the skip button functionality
     // TODO add the i button functionality
     // TODO make it to change with the exercise
     // TODO use async image instead of image
     // Todo disabled the back button , add or change the toast for it
+
+    var isLoading by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -65,7 +71,7 @@ fun WorkoutScreen(
 
         val context = LocalContext.current
         BackHandler {
-             Toast.makeText(context, "Can't use back button", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Can't use back button", Toast.LENGTH_SHORT).show()
         }
 
         // Image area
@@ -122,14 +128,27 @@ fun WorkoutScreen(
                         totalTime = 100
                     )
 
+                    MediaButtonRow(
+                        onPlayClick = {
+                            isLoading = ! isLoading
+                            Log.e("Button", "Play")
+                        },
+                        onPauseClick = {
+                            isLoading = ! isLoading
+                            Log.e("Button", "Pause")
+                        },
+                        onNextClick = { Log.e("Button", "next") },
+                        onPreviousClick = { Log.e("Button", "previous") },
+                        isPlaying = isLoading
+                    )
 
                     // buttons area
                     NavigationButtonsRow(
                         modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 8.dp, vertical = 16.dp),
-                        onSkipClick = {onSkipClick()},
-                        onPauseClick = {onPauseClick()}
+                        onSkipClick = { onSkipClick() },
+                        onPauseClick = { onPauseClick() }
                     )
                 }
             }
@@ -138,9 +157,56 @@ fun WorkoutScreen(
 }
 
 @Composable
+fun MediaButtonRow(
+    onPlayClick: () -> Unit,
+    onPauseClick: () -> Unit,
+    onNextClick: () -> Unit,
+    onPreviousClick: () -> Unit,
+    isPlaying: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+    ) {
+        IconButton(
+            onClick = { onPreviousClick() }
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+            )
+        }
+        IconButton(
+            onClick = {
+                if (isPlaying) onPauseClick() else onPlayClick()
+            }
+        ) {
+            Icon(
+                painter = painterResource(if (isPlaying) R.drawable.baseline_pause_24 else R.drawable.baseline_play_arrow_24),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+            )
+        }
+        IconButton(
+            onClick = { onNextClick() }
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+            )
+        }
+    }
+}
+
+@Composable
 fun ExerciseNameRow(
     exerciseName: String,
-    onInfoClick:()->Unit,
+    onInfoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -180,7 +246,7 @@ fun TimerDisplay(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-    ){
+    ) {
         Card(
             modifier = Modifier
                     .fillMaxWidth(widthFraction)
@@ -193,8 +259,8 @@ fun TimerDisplay(
 
 @Composable
 fun NavigationButtonsRow(
-    onSkipClick:()-> Unit,
-    onPauseClick:()-> Unit,
+    onSkipClick: () -> Unit,
+    onPauseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -202,7 +268,7 @@ fun NavigationButtonsRow(
     ) {
         MyAppButton(
             onClick = { onSkipClick() },
-            buttonText = stringResource(R.string.skip) ,
+            buttonText = stringResource(R.string.skip),
             buttonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
             textColor = MaterialTheme.colorScheme.primaryContainer,
             modifier = Modifier
@@ -212,7 +278,7 @@ fun NavigationButtonsRow(
                     .noRippleClickable { }
         )
         MyAppButton(
-            onClick = {onPauseClick()},
+            onClick = { onPauseClick() },
             modifier = Modifier
                     .height(50.dp)
                     .weight(1f)

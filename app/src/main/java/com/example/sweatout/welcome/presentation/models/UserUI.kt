@@ -18,17 +18,18 @@ data class UserUI(
 )
 
 fun UserUI.toUser(): User {
-    return User(name = name,
-    age = age,
-    height = height,
-    weight = weight,
-    gender = gender.toString(),
-    imageUrl = imageUrl.toString(),
-    email = email.toString(),
-    phoneNo = phoneNo.toString(),
-    activityLevel = activityLevel.toString(),
-    goals = goals?: emptyList(),
-    nationality = nationality,
-    nickName = nickName.toString()
+    return User(
+        name = name,
+        age = age,
+        height = height,
+        weight = weight,
+        gender = gender.toString(),
+        imageUrl = imageUrl.toString(),
+        email = email.toString(),
+        phoneNo = phoneNo.toString(),
+        activityLevel = activityLevel.toString(),
+        goals = goals ?: emptyList(),
+        nationality = nationality,
+        nickName = nickName.toString()
     )
 }
