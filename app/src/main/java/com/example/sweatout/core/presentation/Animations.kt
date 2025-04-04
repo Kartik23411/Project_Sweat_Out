@@ -131,7 +131,7 @@ fun TypeWriterAnimation(
     val textToDisplay = "$baseText $partText"
 
     LaunchedEffect(key1 = parts) {
-        while (partIndex <= parts.size){
+        while (partIndex <= parts.size) {
             val part = parts[partIndex]
 
             part.forEachIndexed { charIndex, _ ->
@@ -154,7 +154,8 @@ fun TypeWriterAnimation(
         style = MaterialTheme.typography.titleLarge.copy(
             fontSize = 25.sp,
             letterSpacing = 2.sp,
-            fontWeight = FontWeight.ExtraBold),
+            fontWeight = FontWeight.ExtraBold
+        ),
         color = MaterialTheme.colorScheme.onSurface,
         modifier = modifier
     )

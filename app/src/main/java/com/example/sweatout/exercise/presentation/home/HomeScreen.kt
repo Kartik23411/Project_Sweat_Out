@@ -2,6 +2,9 @@ package com.example.sweatout.exercise.presentation.home
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,6 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -30,6 +34,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -47,6 +52,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.sweatout.R
+import com.example.sweatout.core.presentation.RotatingCircle
+import com.example.sweatout.exercise.domain.DifficultyLevel
 import com.example.sweatout.exercise.presentation.WorkoutViewModal
 import com.example.sweatout.exercise.presentation.home.components.ActivityGraph
 import com.example.sweatout.exercise.presentation.home.components.DefaultBMICardContent
@@ -93,6 +100,19 @@ fun HomeScreen(
         bmiCategory = getBmiCategory(bmi)
     }
 
+    val state by viewModel.state.collectAsState()
+    var showAnimation by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.isLoading) {
+        if (state.isLoading) {
+            showAnimation = true
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        // Assume the user’s selected activity level is stored in session or passed in as a parameter.
+        viewModel.loadWorkoutPlan(DifficultyLevel.EASY)
+    }
 
     Column(
         modifier = modifier
@@ -100,6 +120,24 @@ fun HomeScreen(
                 .verticalScroll(mainScrollState)
                 .padding(horizontal = 16.dp),
     ) {
+
+        AnimatedVisibility(
+            visible = showAnimation,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            AlertDialog(
+                modifier = Modifier
+                        .fillMaxWidth(.6f)
+                        .height(150.dp)
+                        .clip(RoundedCornerShape(5)),
+                onDismissRequest = {},
+                confirmButton = {},
+                dismissButton = {},
+                title = { RotatingCircle() }
+            )
+        }
+
         // Top bar row
         TopAppBar(
             userName = user?.nickName ?: "Kartik",

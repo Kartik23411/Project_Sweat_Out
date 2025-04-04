@@ -1,8 +1,13 @@
 package com.example.sweatout.exercise.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sweatout.core.domain.util.Result
 import com.example.sweatout.core.session.UserSession
+import com.example.sweatout.exercise.data.ExerciseRepository
+import com.example.sweatout.exercise.domain.DifficultyLevel
+import com.example.sweatout.exercise.domain.Exercise
 import com.example.sweatout.exercise.domain.SessionResult
 import com.example.sweatout.exercise.presentation.models.SessionResultUi
 import com.example.sweatout.exercise.presentation.models.toCal
@@ -12,17 +17,20 @@ import com.example.sweatout.welcome.domain.models.User
 import com.example.sweatout.welcome.domain.models.toUserUI
 import com.example.sweatout.welcome.presentation.models.UserUI
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WorkoutViewModal @Inject constructor(
-    private val userSession: UserSession
+    private val userSession: UserSession,
+    private val repository: ExerciseRepository
 ) : ViewModel() {
 
     private val _user: StateFlow<User?> =
@@ -34,6 +42,39 @@ class WorkoutViewModal @Inject constructor(
     val session_Result = _session_Result.asStateFlow()
     private val _sessionUi_Result = MutableStateFlow(SessionResultUi())
     val sessionUi_Result = _sessionUi_Result.asStateFlow()
+
+    private val _state: StateFlow<WorkoutState> = MutableStateFlow(WorkoutState())
+    val state: StateFlow<WorkoutState> = _state
+
+    fun loadWorkoutPlan(difficultyLevel: DifficultyLevel) {
+        viewModelScope.launch {
+            _state.value.copy(isLoading = true)
+            when (val result = repository.getExercisePlan(difficultyLevel)) {
+                is Result.Success -> {
+                    Log.d("Data", result.data.toString())
+                    _state.value.copy(isLoading = false, exercises = result.data)
+                }
+
+                is Result.Error   -> _state.value.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun loadFromLocal() {
+        viewModelScope.launch {
+            when (val result = repository.getLocalExercise()) {
+                is Result.Success -> {
+                    Log.d("Data", result.data.toString())
+                    _state.value.copy(isLoading = false, exercises = result.data)
+                }
+
+                is Result.Error   -> _state.value.copy(isLoading = false)
+            }
+        }
+    }
+
+    var getAllExercises: Flow<List<Exercise>> = repository.getAllExercises()
+
 
     fun increaseStreak() {
         _session_Result.value =
@@ -83,3 +124,8 @@ class WorkoutViewModal @Inject constructor(
         )
     }
 }
+
+data class WorkoutState(
+    val isLoading: Boolean = false,
+    val exercises: List<Exercise> = emptyList()
+)

@@ -17,15 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.example.sweatout.R
 import com.example.sweatout.core.presentation.MyAppButton
 import com.example.sweatout.core.presentation.noRippleClickable
 import com.example.sweatout.exercise.presentation.workout.components.CustomText
 import com.example.sweatout.exercise.presentation.workout.components.WorkoutStatCard
-import com.example.sweatout.ui.theme.SweatOutTheme
 
 @Composable
 fun WorkoutCompleteScreen(

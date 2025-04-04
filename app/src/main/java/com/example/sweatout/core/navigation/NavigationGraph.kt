@@ -12,6 +12,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.sweatout.R
+import com.example.sweatout.exercise.presentation.WorkoutViewModal
 import com.example.sweatout.exercise.presentation.home.HomeScreen
 import com.example.sweatout.exercise.presentation.workout.WorkoutCompleteScreen
 import com.example.sweatout.exercise.presentation.workout.WorkoutPauseScreen
@@ -362,6 +363,7 @@ fun NavGraphBuilder.welcomeGraph(
 
 fun NavGraphBuilder.HomeGraph(
     navController: NavController,
+    workoutViewModal: WorkoutViewModal,
     modifier: Modifier = Modifier,
     context: Context
 ) {
@@ -394,6 +396,7 @@ fun NavGraphBuilder.HomeGraph(
         ) {
             HomeScreen(
                 modifier = modifier,
+                viewModel = workoutViewModal,
                 onStartClick = { navController.navigate(Screen.WorkoutTypeSelectScreen.route) },
                 onBotClick = {}
             )
@@ -453,8 +456,9 @@ fun NavGraphBuilder.HomeGraph(
         ) {
             WorkoutScreen(
                 modifier = modifier,
-                onSkipClick = { navController.navigate(Screen.WorkoutCompleteScreen.route) },
+                onFinish = { navController.navigate(Screen.WorkoutCompleteScreen.route) },
                 onPauseClick = { navController.navigate(Screen.WorkoutPauseScreen.route) },
+                viewmodel = workoutViewModal
 //                onWorkoutComplete = {navController.navigate(Screen.WorkoutCompleteScreen.route)}
             )
         }

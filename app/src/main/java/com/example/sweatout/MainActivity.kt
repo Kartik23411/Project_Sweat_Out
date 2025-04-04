@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.sweatout.core.navigation.WorkOutAppNavHost
 import com.example.sweatout.core.session.UserSession
+import com.example.sweatout.exercise.presentation.WorkoutViewModal
 import com.example.sweatout.ui.theme.SweatOutTheme
 import com.example.sweatout.welcome.presentation.WelcomeModuleViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val welcomeViewModel: WelcomeModuleViewModel = hiltViewModel()
+            val workoutViewModal: WorkoutViewModal = hiltViewModel()
             val navController = rememberNavController()
             val currentUser by userSession.currentUserFlow.collectAsState(initial = null)
             val context = LocalContext.current
@@ -48,6 +50,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = startDestination,
                         modifier = Modifier.padding(innerPadding),
                         welcomeViewModel = welcomeViewModel,
+                        workoutViewModal = workoutViewModal,
                         context
                     )
                 }
