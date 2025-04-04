@@ -68,12 +68,11 @@ import kotlin.random.Random
 fun WorkoutScreen(
     onPauseClick: () -> Unit,
     onFinish: () -> Unit,
-    viewmodel: WorkoutViewModal = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewmodel: WorkoutViewModal = hiltViewModel(),
 ) {
     // TODO add the i button functionality
     // Todo disabled the back button , add or change the toast for it
-
 
     val context = LocalContext.current
     val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -99,7 +98,6 @@ fun WorkoutScreen(
 
     val me by viewmodel.getAllExercises.collectAsState(initial = listOf())
     val exerciseList = me.shuffled(Random.Default).take(3)
-    Log.d("ex", "$exerciseList")
     var currentPosition by remember { mutableIntStateOf(1) }
 
     if (exerciseList.isEmpty()) {
@@ -111,11 +109,10 @@ fun WorkoutScreen(
         key(currentPosition) {
 
             var time by remember { mutableIntStateOf(if (exercise.durationSeconds == 0) 10 else exercise.durationSeconds) }
-            var isComplete by remember { mutableStateOf(false) }
+//            var isComplete by remember { mutableStateOf(false) }
 
             LaunchedEffect(exercise) {
                 time = if (exercise.durationSeconds == 0) 10 else exercise.durationSeconds
-                Log.e("time", "screen $time")
             }
 
             Column(
@@ -181,11 +178,16 @@ fun WorkoutScreen(
                                 totalTime = time,
                                 onend = {
                                     if (currentPosition < exerciseList.size) {
+                                        viewmodel.increaseExerciseDone()
+                                        viewmodel.increaseTotalTimeInSession(time)
+                                        viewmodel.increaseCalBurnedInSession(exercise.caloriesBurned)
                                         currentPosition ++
                                     }
                                     else if (currentPosition == exerciseList.size) {
+                                        viewmodel.increaseExerciseDone()
+                                        viewmodel.increaseTotalTimeInSession(time)
+                                        viewmodel.increaseCalBurnedInSession(exercise.caloriesBurned)
                                         onFinish()
-                                        Toast.makeText(context, "Hello", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             )
@@ -327,7 +329,6 @@ fun TimerDisplay(
                     .height(cardHeight)
         ) {
             LinearCountDown(totalTime = totalTime, onend = { onend() })
-
         }
     }
 }

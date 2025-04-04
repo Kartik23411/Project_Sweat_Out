@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -39,9 +38,10 @@ class WorkoutViewModal @Inject constructor(
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     private val _session_Result = MutableStateFlow(SessionResult())
-    val session_Result = _session_Result.asStateFlow()
+    val session_Result: StateFlow<SessionResult> = _session_Result
+
     private val _sessionUi_Result = MutableStateFlow(SessionResultUi())
-    val sessionUi_Result = _sessionUi_Result.asStateFlow()
+    val sessionUi_Result: StateFlow<SessionResultUi> = _sessionUi_Result
 
     private val _state: StateFlow<WorkoutState> = MutableStateFlow(WorkoutState())
     val state: StateFlow<WorkoutState> = _state
@@ -50,19 +50,6 @@ class WorkoutViewModal @Inject constructor(
         viewModelScope.launch {
             _state.value.copy(isLoading = true)
             when (val result = repository.getExercisePlan(difficultyLevel)) {
-                is Result.Success -> {
-                    Log.d("Data", result.data.toString())
-                    _state.value.copy(isLoading = false, exercises = result.data)
-                }
-
-                is Result.Error   -> _state.value.copy(isLoading = false)
-            }
-        }
-    }
-
-    fun loadFromLocal() {
-        viewModelScope.launch {
-            when (val result = repository.getLocalExercise()) {
                 is Result.Success -> {
                     Log.d("Data", result.data.toString())
                     _state.value.copy(isLoading = false, exercises = result.data)
@@ -82,15 +69,18 @@ class WorkoutViewModal @Inject constructor(
         updateSessionUiResultUiFlow()
     }
 
-    fun increaseCalBurnedInSession() {
+    fun increaseCalBurnedInSession(calBurned: Int) {
         _session_Result.value =
-                _session_Result.value.copy(calBurnedInSession = _session_Result.value.calBurnedInSession + 1)
+                _session_Result.value.copy(calBurnedInSession = _session_Result.value
+                        .calBurnedInSession + calBurned)
+        Log.d("Exercise Updated", "${_session_Result.value.calBurnedInSession} and $calBurned")
         updateSessionUiResultUiFlow()
     }
 
-    fun increaseTotalTimeInSession() {
+    fun increaseTotalTimeInSession(time: Int) {
         _session_Result.value =
-                _session_Result.value.copy(totalTimeInSession = _session_Result.value.totalTimeInSession + 1)
+                _session_Result.value.copy(totalTimeInSession = _session_Result.value
+                        .totalTimeInSession + time)
         updateSessionUiResultUiFlow()
     }
 
@@ -112,6 +102,9 @@ class WorkoutViewModal @Inject constructor(
         updateSessionUiResultUiFlow()
     }
 
+    fun clearPreviousSession(){
+        _session_Result.value = SessionResult(0,0,0,0,0,0)
+    }
 
     fun updateSessionUiResultUiFlow() {
         _sessionUi_Result.value = SessionResultUi(
@@ -119,7 +112,7 @@ class WorkoutViewModal @Inject constructor(
             calBurnedInSession = _session_Result.value.calBurnedInSession.toCal(),
             totalExercisesDone = _session_Result.value.totalExercisesDone.toString(),
             exercisesInSession = _session_Result.value.exercisesDoneInSession.toString(),
-            totalTimeInSession = _session_Result.value.totalTimeInSession.toMinutes(),
+            totalTimeInSession = (_session_Result.value.totalTimeInSession).toMinutes(),
             streak = _session_Result.value.streak.toDays()
         )
     }

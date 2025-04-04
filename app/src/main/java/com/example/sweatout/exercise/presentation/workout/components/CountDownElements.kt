@@ -1,6 +1,5 @@
 package com.example.sweatout.exercise.presentation.workout.components
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
@@ -34,71 +34,6 @@ import com.example.sweatout.R
 import com.example.sweatout.ui.theme.ds_digital_bold
 import kotlinx.coroutines.delay
 
-
-//@Composable
-//fun LinearCountDown(
-//    modifier: Modifier = Modifier,
-//    totalTime: Int,
-//    onend:()-> Unit
-//) {
-//    var elapsedTime by remember(totalTime) { mutableStateOf(totalTime) }
-//    var isRunning by remember { mutableStateOf(true) }
-//
-////    LaunchedEffect(isRunning) {
-////        while (isRunning) {
-////            delay(1000L)
-////            elapsedTime -= 1
-////            if (elapsedTime == 0) {
-//////                isRunning = false
-////                onend()
-////            }
-////        }
-////    }
-//
-//    LaunchedEffect(totalTime) {
-//        Log.e("time", "timeer $totalTime")
-//        elapsedTime = totalTime
-//        Log.e("time elap", "elapsed $elapsedTime")
-//        while (elapsedTime > 0){
-//            delay(1000L)
-//            elapsedTime--
-////            Log.e("time elap", "elapsed $elapsedTime")
-//        }
-////        if (elapsedTime == 0) {
-//////                isRunning = false
-////                onend()
-////            }
-//        onend()
-//    }
-//
-//    val formattedTime = formatTime(elapsedTime)
-//
-//    Row(
-//        modifier = modifier.fillMaxWidth(),
-//        horizontalArrangement = Arrangement.Center,
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//        formattedTime.forEach { char ->
-//            Box(
-//                modifier = Modifier
-//                        .width(50.dp)  // Fixed width per character
-//                        .padding(horizontal = 4.dp),
-//                contentAlignment = Alignment.Center
-//            ) {
-//                Text(
-//                    text = char.toString(),
-//                    style = MaterialTheme.typography.displayLarge.copy(
-//                        color = MaterialTheme.colorScheme.onSurface,
-//                        fontSize = 90.sp,
-//                        fontFamily = ds_digital_bold
-//                    ),
-//                    textAlign = TextAlign.Center
-//                )
-//            }
-//        }
-//    }
-//}
-
 @Composable
 fun LinearCountDown(
     modifier: Modifier = Modifier,
@@ -107,18 +42,15 @@ fun LinearCountDown(
 ) {
     // Use a key wrapper with the totalTime to force recomposition
     key(totalTime) {
-        var elapsedTime by remember { mutableStateOf(totalTime) }
+        var elapsedTime by remember { mutableIntStateOf(totalTime) }
 
         LaunchedEffect(Unit) {  // Change to Unit to ensure it runs exactly once per composition
-            elapsedTime = totalTime // Ensure we start with the correct time
-            Log.e("time", "timer $totalTime")
-            Log.e("time elap", "elapsed $elapsedTime")
+            elapsedTime = totalTime
 
             while (elapsedTime > 0) {
                 delay(1000L)
                 elapsedTime --
             }
-            // Call onend outside the loop to ensure it's called exactly once
             onend()
         }
 
@@ -178,14 +110,14 @@ fun CircularCountDown(
         val strokeWidth = dimensionResource(R.dimen.timer_stroke_width)
         val radius = dimensionResource(R.dimen.timer_circle_radius)
 
-        var timeLeft by remember { mutableStateOf(totalTime) }
-        val percentage = remember { mutableStateOf(1f) }
+        var timeLeft by remember { mutableIntStateOf(totalTime) }
+        val percentage = remember { mutableFloatStateOf(1f) }
 
         LaunchedEffect(key1 = timeLeft) {
             if (timeLeft > 0) {
                 withFrameNanos { it }
                 // Update time every second
-                percentage.value = timeLeft / totalTime.toFloat()
+                percentage.floatValue = timeLeft / totalTime.toFloat()
                 delay(1000L)
                 timeLeft --
             }
@@ -211,7 +143,7 @@ fun CircularCountDown(
                     drawArc(
                         color = timerColor,
                         startAngle = - 90f,
-                        sweepAngle = 360 * percentage.value,
+                        sweepAngle = 360 * percentage.floatValue,
                         useCenter = false,
                         style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
                     )

@@ -1,5 +1,6 @@
 package com.example.sweatout.exercise.presentation.workout
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,23 +14,31 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sweatout.R
 import com.example.sweatout.core.presentation.MyAppButton
 import com.example.sweatout.core.presentation.noRippleClickable
+import com.example.sweatout.exercise.presentation.WorkoutViewModal
 import com.example.sweatout.exercise.presentation.workout.components.CustomText
 import com.example.sweatout.exercise.presentation.workout.components.WorkoutStatCard
 
 @Composable
 fun WorkoutCompleteScreen(
     modifier: Modifier = Modifier,
-    onHomeClick: () -> Unit
-//    viewModal: WorkoutViewModal = viewModel()
+    onHomeClick: () -> Unit,
+    viewModel: WorkoutViewModal = hiltViewModel()
 ) {
+    BackHandler {  }
+
+    val sessionDetails by viewModel.sessionUi_Result.collectAsState()
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,7 +68,10 @@ fun WorkoutCompleteScreen(
 
         // Session Stats Row
         SessionStatsRow(
-            Modifier, "10", "453", "12"
+            Modifier,
+            sessionDetails.exercisesInSession,
+            sessionDetails.calBurnedInSession,
+            sessionDetails.totalTimeInSession
         )
 
         Spacer(Modifier.height(120.dp))
@@ -70,7 +82,10 @@ fun WorkoutCompleteScreen(
                     .fillMaxWidth(.87f)
                     .height(50.dp)
                     .noRippleClickable {},
-            onClick = { onHomeClick() },
+            onClick = {
+                viewModel.clearPreviousSession()
+                onHomeClick()
+            },
             buttonText = stringResource(R.string.home),
         )
     }

@@ -1,5 +1,8 @@
 package com.example.sweatout.exercise.presentation.models
 
+import java.math.BigDecimal
+import java.math.RoundingMode
+
 data class SessionResultUi(
     val totalCalBurned: String = "0 kcal",
     val calBurnedInSession: String = "0 cal",
@@ -10,15 +13,13 @@ data class SessionResultUi(
 )
 
 fun Int.toCal(): String {
-    if (this > 999) return "$this kcal"
-    else return "$this cal"
+    if (this > 999) return "$this k"
+    else return "$this"
 }
 
 fun Int.toMinutes(): String {
-    val hours = this / 60
-    val remainingMin = this % 60
-    if (hours > 0) return "$hours H $remainingMin Min"
-    else return "$this Min"
+    val minutes = this / 60
+    return BigDecimal(minutes).setScale(2, RoundingMode.HALF_UP).toDouble().toString()
 }
 
 fun Int.toDays(): String {

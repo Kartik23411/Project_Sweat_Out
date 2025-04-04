@@ -459,7 +459,6 @@ fun NavGraphBuilder.HomeGraph(
                 onFinish = { navController.navigate(Screen.WorkoutCompleteScreen.route) },
                 onPauseClick = { navController.navigate(Screen.WorkoutPauseScreen.route) },
                 viewmodel = workoutViewModal
-//                onWorkoutComplete = {navController.navigate(Screen.WorkoutCompleteScreen.route)}
             )
         }
 
@@ -548,7 +547,8 @@ fun NavGraphBuilder.HomeGraph(
         ) {
             WorkoutCompleteScreen(
                 modifier,
-                onHomeClick = { navController.navigate(Screen.WorkoutHome.route) }
+                onHomeClick = { navController.navigate(Screen.WorkoutHome.route) },
+                viewModel = workoutViewModal
             )
         }
     }
