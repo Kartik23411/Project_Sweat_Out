@@ -14,7 +14,8 @@ data class User(
     val activityLevel: String,
     val goals: List<String>,
     val nationality: String,
-    val nickName: String
+    val nickName: String,
+    val totalCaloriesBurned: Int = 0
 )
 
 fun User.toUserUI(): UserUI {
@@ -30,6 +31,7 @@ fun User.toUserUI(): UserUI {
         activityLevel,
         goals,
         nationality,
-        nickName
+        nickName,
+        totalCaloriesBurned
     )
 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,6 +34,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -55,10 +58,10 @@ import com.example.sweatout.R
 import com.example.sweatout.core.presentation.RotatingCircle
 import com.example.sweatout.exercise.domain.DifficultyLevel
 import com.example.sweatout.exercise.presentation.WorkoutViewModal
-import com.example.sweatout.exercise.presentation.home.components.ActivityGraph
 import com.example.sweatout.exercise.presentation.home.components.DefaultBMICardContent
 import com.example.sweatout.exercise.presentation.home.components.HealthMetricCard
 import com.example.sweatout.exercise.presentation.home.components.SectionSeparationText
+import com.example.sweatout.exercise.presentation.workout.components.ImageSlide
 import com.example.sweatout.ui.theme.SweatOutTheme
 
 fun calculateBmi(height: Int, weight: Int): Float {
@@ -84,12 +87,11 @@ fun HomeScreen(
     onNotificationIconClick: () -> Unit = {},
     viewModel: WorkoutViewModal = hiltViewModel()
 ) {
-//    todo implement the change of calorie burned
 //    todo add the chatbot functionality
 
     val user by viewModel.userUi.collectAsState()
-    var expandedCardIndex by rememberSaveable { mutableStateOf(- 1) }
-    var bmi by rememberSaveable { mutableStateOf(0f) }
+    var expandedCardIndex by rememberSaveable { mutableIntStateOf(- 1) }
+    var bmi by rememberSaveable { mutableFloatStateOf(0f) }
     var bmiCategory by rememberSaveable { mutableStateOf("") }
 
     val mainScrollState = rememberScrollState()
@@ -110,7 +112,6 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        // Assume the user’s selected activity level is stored in session or passed in as a parameter.
         viewModel.loadWorkoutPlan(DifficultyLevel.EASY)
     }
 
@@ -187,7 +188,8 @@ fun HomeScreen(
                                         .weight(1f)
                                         .padding(end = if (expandedCardIndex == - 1) 8.dp else 0.dp),
                                 displayText = stringResource(R.string.cal_card),
-                                displayValue = 0f,
+//                                displayValue = sessionDetails.totalCalBurned.toFloat(),
+                                displayValue = user?.totalCaloriesBurned?.toFloat() ?: 0f,
                                 displayUnit = stringResource(R.string.unit_cal),
                                 isExpanded = expandedCardIndex == 0,
                                 onCardClick = {
@@ -264,17 +266,24 @@ fun HomeScreen(
             }
         }
 
-        SectionSeparationText(
-            textId = R.string.your_activity,
-            modifier = Modifier.padding(12.dp)
-        )
+//        SectionSeparationText(
+//            textId = R.string.your_activity,
+//            modifier = Modifier.padding(12.dp)
+//        )
+        Spacer(Modifier.height(24.dp))
 
-        ActivityGraph(
-            modifier = Modifier
+        ImageSlide(
+            Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp, horizontal = 12.dp)
                     .height(200.dp)
         )
+
+//        ActivityGraph(
+//            modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(vertical = 16.dp, horizontal = 12.dp)
+//                    .height(200.dp)
+//        )
 
     }
 }
@@ -396,7 +405,6 @@ fun TopAppBar(
                 AsyncImage(
                     contentScale = ContentScale.Crop,
                     model = imageurl,
-//                    painter = painterResource(R.drawable.ic_launcher_foreground),
                     fallback = painterResource(R.drawable.baseline_account_circle_24),
                     placeholder = painterResource(R.drawable.baseline_account_circle_24),
                     error = painterResource(R.drawable.baseline_account_circle_24),

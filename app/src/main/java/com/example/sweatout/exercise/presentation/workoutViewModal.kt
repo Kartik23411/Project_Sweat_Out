@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -71,16 +72,20 @@ class WorkoutViewModal @Inject constructor(
 
     fun increaseCalBurnedInSession(calBurned: Int) {
         _session_Result.value =
-                _session_Result.value.copy(calBurnedInSession = _session_Result.value
-                        .calBurnedInSession + calBurned)
+                _session_Result.value.copy(
+                    calBurnedInSession = _session_Result.value
+                            .calBurnedInSession + calBurned
+                )
         Log.d("Exercise Updated", "${_session_Result.value.calBurnedInSession} and $calBurned")
         updateSessionUiResultUiFlow()
     }
 
     fun increaseTotalTimeInSession(time: Int) {
         _session_Result.value =
-                _session_Result.value.copy(totalTimeInSession = _session_Result.value
-                        .totalTimeInSession + time)
+                _session_Result.value.copy(
+                    totalTimeInSession = _session_Result.value
+                            .totalTimeInSession + time
+                )
         updateSessionUiResultUiFlow()
     }
 
@@ -91,9 +96,21 @@ class WorkoutViewModal @Inject constructor(
     }
 
     fun increaseTotalCal() {
-        _session_Result.value =
-                _session_Result.value.copy(totalCalBurned = _session_Result.value.calBurnedInSession + _session_Result.value.totalCalBurned)
+        viewModelScope.launch {
+            updateTotalCaloriesBurned(_session_Result.value.calBurnedInSession)
+        }
         updateSessionUiResultUiFlow()
+    }
+
+    suspend fun updateTotalCaloriesBurned(additionalCalories: Int) {
+        val currentUser = userSession.currentUserFlow.first()
+        currentUser?.let { user ->
+            val updatedUser = user.copy(
+                totalCaloriesBurned = user.totalCaloriesBurned + additionalCalories
+            )
+            Log.d("Updated user", "$updatedUser")
+            userSession.saveCurrentUser(updatedUser)
+        }
     }
 
     fun increaseExercisesDone() {
@@ -102,13 +119,17 @@ class WorkoutViewModal @Inject constructor(
         updateSessionUiResultUiFlow()
     }
 
-    fun clearPreviousSession(){
-        _session_Result.value = SessionResult(0,0,0,0,0,0)
+    fun clearPreviousSession() {
+        increaseTotalCal()
+        _session_Result.value = _session_Result.value.copy(
+            exercisesDoneInSession = 0,
+            totalTimeInSession = 0,
+            calBurnedInSession = 0
+        )
     }
 
     fun updateSessionUiResultUiFlow() {
         _sessionUi_Result.value = SessionResultUi(
-            totalCalBurned = _session_Result.value.totalCalBurned.toCal(),
             calBurnedInSession = _session_Result.value.calBurnedInSession.toCal(),
             totalExercisesDone = _session_Result.value.totalExercisesDone.toString(),
             exercisesInSession = _session_Result.value.exercisesDoneInSession.toString(),

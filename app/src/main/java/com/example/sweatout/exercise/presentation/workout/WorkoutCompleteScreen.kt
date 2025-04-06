@@ -35,7 +35,7 @@ fun WorkoutCompleteScreen(
     onHomeClick: () -> Unit,
     viewModel: WorkoutViewModal = hiltViewModel()
 ) {
-    BackHandler {  }
+    BackHandler { }
 
     val sessionDetails by viewModel.sessionUi_Result.collectAsState()
 

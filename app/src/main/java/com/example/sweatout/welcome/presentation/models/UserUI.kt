@@ -14,7 +14,8 @@ data class UserUI(
     var activityLevel: String? = null,
     var goals: List<String>? = null,
     var nationality: String = "Indian",
-    var nickName: String? = null
+    var nickName: String? = null,
+    var totalCaloriesBurned: Int = 0
 )
 
 fun UserUI.toUser(): User {
@@ -30,6 +31,7 @@ fun UserUI.toUser(): User {
         activityLevel = activityLevel.toString(),
         goals = goals ?: emptyList(),
         nationality = nationality,
-        nickName = nickName.toString()
+        nickName = nickName.toString(),
+        totalCaloriesBurned
     )
 }

@@ -4,8 +4,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 data class SessionResultUi(
-    val totalCalBurned: String = "0 kcal",
-    val calBurnedInSession: String = "0 cal",
+    val calBurnedInSession: String = "0",
     val totalExercisesDone: String = "0",
     val exercisesInSession: String = "0",
     val totalTimeInSession: String = "0 Minute",
@@ -13,7 +12,7 @@ data class SessionResultUi(
 )
 
 fun Int.toCal(): String {
-    if (this > 999) return "$this k"
+    if (this > 999) return "$this"
     else return "$this"
 }
 

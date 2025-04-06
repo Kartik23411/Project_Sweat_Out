@@ -22,7 +22,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -52,6 +51,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -62,6 +62,7 @@ import com.example.sweatout.core.presentation.noRippleClickable
 import com.example.sweatout.exercise.domain.Exercise
 import com.example.sweatout.exercise.presentation.WorkoutViewModal
 import com.example.sweatout.exercise.presentation.workout.components.LinearCountDown
+import com.example.sweatout.ui.theme.SweatOutTheme
 import kotlin.random.Random
 
 @Composable
@@ -134,7 +135,6 @@ fun WorkoutScreen(
                     AsyncImage(
                         contentDescription = null,
                         model = exercise.image,
-//                    error = "https://gsaxnuisttgmfentrhjj.supabase.co/storage/v1/object/public/exercise.illustrations//arm-circles-exercise-illustration.jpg",
                         contentScale = ContentScale.FillBounds,
                         alignment = Alignment.Center,
                         modifier = Modifier.fillMaxSize()
@@ -287,7 +287,7 @@ fun ExerciseNameRow(
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = exerciseName,
@@ -298,17 +298,35 @@ fun ExerciseNameRow(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier
+                    .padding(top = 4.dp)
+                    .weight(1f)
         )
         Icon(
-            imageVector = Icons.Default.Info,
+            painter = painterResource(R.drawable.baseline_info_outline_24),
             contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .6f),
             modifier = Modifier
-                    .size(16.dp)
-                    .padding(top = 2.dp)
+                    .padding(end = 8.dp)
+                    .size(20.dp)
                     .clickable(onClick = { onInfoClick() })
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview() {
+    SweatOutTheme {
+        ExerciseNameRow(
+            exerciseName = "Arm Circles",
+            onInfoClick = {},
+            Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+        )
+    }
+
 }
 
 @Composable
