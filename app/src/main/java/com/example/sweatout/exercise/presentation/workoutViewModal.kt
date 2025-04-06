@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.sweatout.core.domain.util.Result
 import com.example.sweatout.core.session.UserSession
 import com.example.sweatout.exercise.data.ExerciseRepository
-import com.example.sweatout.exercise.domain.DifficultyLevel
-import com.example.sweatout.exercise.domain.Exercise
-import com.example.sweatout.exercise.domain.SessionResult
+import com.example.sweatout.exercise.domain.models.DifficultyLevel
+import com.example.sweatout.exercise.domain.models.Exercise
+import com.example.sweatout.exercise.domain.models.SessionResult
 import com.example.sweatout.exercise.presentation.models.SessionResultUi
 import com.example.sweatout.exercise.presentation.models.toCal
 import com.example.sweatout.exercise.presentation.models.toDays
@@ -39,8 +39,6 @@ class WorkoutViewModal @Inject constructor(
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     private val _session_Result = MutableStateFlow(SessionResult())
-    val session_Result: StateFlow<SessionResult> = _session_Result
-
     private val _sessionUi_Result = MutableStateFlow(SessionResultUi())
     val sessionUi_Result: StateFlow<SessionResultUi> = _sessionUi_Result
 

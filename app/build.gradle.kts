@@ -46,6 +46,9 @@ android {
 }
 
 dependencies {
+    // exoplayer and media3
+    implementation (libs.accompanist.systemuicontroller)
+    implementation (libs.androidx.media3.exoplayer)
     // room
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")

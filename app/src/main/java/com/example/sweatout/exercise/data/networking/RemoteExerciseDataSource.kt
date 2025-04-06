@@ -7,8 +7,8 @@ import com.example.sweatout.core.domain.util.Result
 import com.example.sweatout.core.domain.util.map
 import com.example.sweatout.exercise.data.mappers.toExercise
 import com.example.sweatout.exercise.data.networking.dto.ExerciseDto
-import com.example.sweatout.exercise.domain.DifficultyLevel
-import com.example.sweatout.exercise.domain.Exercise
+import com.example.sweatout.exercise.domain.models.DifficultyLevel
+import com.example.sweatout.exercise.domain.models.Exercise
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import javax.inject.Inject

@@ -56,7 +56,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.sweatout.R
 import com.example.sweatout.core.presentation.RotatingCircle
-import com.example.sweatout.exercise.domain.DifficultyLevel
+import com.example.sweatout.exercise.domain.models.DifficultyLevel
 import com.example.sweatout.exercise.presentation.WorkoutViewModal
 import com.example.sweatout.exercise.presentation.home.components.DefaultBMICardContent
 import com.example.sweatout.exercise.presentation.home.components.HealthMetricCard

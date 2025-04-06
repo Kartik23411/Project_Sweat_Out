@@ -1,8 +1,8 @@
 package com.example.sweatout.exercise.data.mappers
 
 import com.example.sweatout.exercise.data.networking.dto.ExerciseDto
-import com.example.sweatout.exercise.domain.DifficultyLevel
-import com.example.sweatout.exercise.domain.Exercise
+import com.example.sweatout.exercise.domain.models.DifficultyLevel
+import com.example.sweatout.exercise.domain.models.Exercise
 
 fun ExerciseDto.toExercise(): Exercise {
     return Exercise(

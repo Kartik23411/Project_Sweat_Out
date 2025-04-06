@@ -2,7 +2,6 @@ package com.example.sweatout.exercise.presentation.workout
 
 import android.content.Context
 import android.os.PowerManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -59,8 +58,10 @@ import coil.compose.AsyncImage
 import com.example.sweatout.R
 import com.example.sweatout.core.presentation.MyAppButton
 import com.example.sweatout.core.presentation.noRippleClickable
-import com.example.sweatout.exercise.domain.Exercise
+import com.example.sweatout.exercise.domain.models.Exercise
 import com.example.sweatout.exercise.presentation.WorkoutViewModal
+import com.example.sweatout.exercise.presentation.music.MusicEvent
+import com.example.sweatout.exercise.presentation.music.MusicViewModel
 import com.example.sweatout.exercise.presentation.workout.components.LinearCountDown
 import com.example.sweatout.ui.theme.SweatOutTheme
 import kotlin.random.Random
@@ -71,9 +72,12 @@ fun WorkoutScreen(
     onFinish: () -> Unit,
     modifier: Modifier = Modifier,
     viewmodel: WorkoutViewModal = hiltViewModel(),
+    musicViewModel: MusicViewModel = hiltViewModel()
 ) {
     // TODO add the i button functionality
     // Todo disabled the back button , add or change the toast for it
+
+    val musicState by musicViewModel.state.collectAsState()
 
     val context = LocalContext.current
     val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -187,24 +191,32 @@ fun WorkoutScreen(
                                         viewmodel.increaseExerciseDone()
                                         viewmodel.increaseTotalTimeInSession(time)
                                         viewmodel.increaseCalBurnedInSession(exercise.caloriesBurned)
+                                        musicViewModel.releasePlayer()
                                         onFinish()
                                     }
                                 }
                             )
 
                             MediaButtonRow(
-                                onPlayClick = {
-                                    isPlaying = ! isPlaying
-                                    Log.e("Button", "Play")
-                                },
-                                onPauseClick = {
-                                    isPlaying = ! isPlaying
-                                    Log.e("Button", "Pause")
-                                },
-                                onNextClick = { Log.e("Button", "next") },
-                                onPreviousClick = { Log.e("Button", "previous") },
-                                isPlaying = isPlaying
+                                onPlayClick = { musicViewModel.onEvent(MusicEvent.PlayPause) },
+                                onPauseClick = { musicViewModel.onEvent(MusicEvent.PlayPause) },
+                                onNextClick = { musicViewModel.onEvent(MusicEvent.NextTrack) },
+                                onPreviousClick = { musicViewModel.onEvent(MusicEvent.PreviousTrack) },
+                                isPlaying = musicState.isPlaying,
                             )
+//                            MediaButtonRow(
+//                                onPlayClick = {
+//                                    isPlaying = ! isPlaying
+//                                    Log.e("Button", "Play")
+//                                },
+//                                onPauseClick = {
+//                                    isPlaying = ! isPlaying
+//                                    Log.e("Button", "Pause")
+//                                },
+//                                onNextClick = { Log.e("Button", "next") },
+//                                onPreviousClick = { Log.e("Button", "previous") },
+//                                isPlaying = isPlaying
+//                            )
 
                             // buttons area
                             NavigationButtonsRow(

@@ -8,8 +8,8 @@ import com.example.sweatout.core.domain.util.NetworkError
 import com.example.sweatout.core.domain.util.Result
 import com.example.sweatout.exercise.data.local.ExerciseDao
 import com.example.sweatout.exercise.data.networking.RemoteExercisePlanDataSource
-import com.example.sweatout.exercise.domain.DifficultyLevel
-import com.example.sweatout.exercise.domain.Exercise
+import com.example.sweatout.exercise.domain.models.DifficultyLevel
+import com.example.sweatout.exercise.domain.models.Exercise
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
