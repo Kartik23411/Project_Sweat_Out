@@ -4,6 +4,10 @@ import android.content.Context
 import android.os.PowerManager
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +41,6 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -99,11 +102,11 @@ fun WorkoutScreen(
         }
     }
 
-    var isPlaying by rememberSaveable { mutableStateOf(false) }
-
     val me by viewmodel.getAllExercises.collectAsState(initial = listOf())
     val exerciseList = me.shuffled(Random.Default).take(3)
     var currentPosition by remember { mutableIntStateOf(1) }
+
+    var isIButtonClicked by remember { mutableStateOf(false) }
 
     if (exerciseList.isEmpty()) {
         CircularProgressIndicator()
@@ -114,7 +117,6 @@ fun WorkoutScreen(
         key(currentPosition) {
 
             var time by remember { mutableIntStateOf(if (exercise.durationSeconds == 0) 10 else exercise.durationSeconds) }
-//            var isComplete by remember { mutableStateOf(false) }
 
             LaunchedEffect(exercise) {
                 time = if (exercise.durationSeconds == 0) 10 else exercise.durationSeconds
@@ -171,75 +173,131 @@ fun WorkoutScreen(
                                         .fillMaxWidth()
                                         .padding(top = 8.dp),
                                 exerciseName = exercise.name,
-                                onInfoClick = {}
+                                onInfoClick = {isIButtonClicked = !isIButtonClicked}
                             )
+                            AnimatedVisibility(
+                                visible = !isIButtonClicked,
+                                enter = fadeIn(
+                                    animationSpec = tween(400, 100)
+                                ),
+                                exit = fadeOut(
+                                    animationSpec = tween(200, 100)
+                                )
+                            ){
+                                // timer display
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    TimerDisplay(
+                                        modifier = Modifier.weight(1f),
+                                        widthFraction = .69f,
+                                        cardHeight = 90.dp,
+                                        totalTime = time,
+                                        onend = {
+                                            if (currentPosition < exerciseList.size) {
+                                                viewmodel.increaseExerciseDone()
+                                                viewmodel.increaseTotalTimeInSession(time)
+                                                viewmodel.increaseCalBurnedInSession(exercise.caloriesBurned)
+                                                currentPosition ++
+                                            }
+                                            else if (currentPosition == exerciseList.size) {
+                                                viewmodel.increaseExerciseDone()
+                                                viewmodel.increaseTotalTimeInSession(time)
+                                                viewmodel.increaseCalBurnedInSession(exercise.caloriesBurned)
+                                                musicViewModel.releasePlayer()
+                                                onFinish()
+                                            }
+                                        }
+                                    )
 
-                            // timer display
-                            TimerDisplay(
-                                modifier = Modifier.weight(1f),
-                                widthFraction = .69f,
-                                cardHeight = 90.dp,
-                                totalTime = time,
-                                onend = {
-                                    if (currentPosition < exerciseList.size) {
-                                        viewmodel.increaseExerciseDone()
-                                        viewmodel.increaseTotalTimeInSession(time)
-                                        viewmodel.increaseCalBurnedInSession(exercise.caloriesBurned)
-                                        currentPosition ++
-                                    }
-                                    else if (currentPosition == exerciseList.size) {
-                                        viewmodel.increaseExerciseDone()
-                                        viewmodel.increaseTotalTimeInSession(time)
-                                        viewmodel.increaseCalBurnedInSession(exercise.caloriesBurned)
-                                        musicViewModel.releasePlayer()
-                                        onFinish()
-                                    }
+                                    //Music Playing Buttons Row
+                                    MediaButtonRow(
+                                        onPlayClick = { musicViewModel.onEvent(MusicEvent.PlayPause) },
+                                        onPauseClick = { musicViewModel.onEvent(MusicEvent.PlayPause) },
+                                        onNextClick = { musicViewModel.onEvent(MusicEvent.NextTrack) },
+                                        onPreviousClick = { musicViewModel.onEvent(MusicEvent.PreviousTrack) },
+                                        isPlaying = musicState.isPlaying,
+                                    )
+
+                                    // buttons area
+                                    NavigationButtonsRow(
+                                        modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 8.dp, vertical = 16.dp),
+                                        onSkipClick = {
+                                            if (currentPosition < exerciseList.size) {
+                                                currentPosition ++
+                                            }
+                                            else if (currentPosition == exerciseList.size) {
+                                                onFinish()
+                                                Toast.makeText(context, "Hello", Toast.LENGTH_SHORT)
+                                                        .show()
+                                            }
+                                        },
+                                        onPauseClick = { onPauseClick() }
+                                    )
                                 }
-                            )
 
-                            MediaButtonRow(
-                                onPlayClick = { musicViewModel.onEvent(MusicEvent.PlayPause) },
-                                onPauseClick = { musicViewModel.onEvent(MusicEvent.PlayPause) },
-                                onNextClick = { musicViewModel.onEvent(MusicEvent.NextTrack) },
-                                onPreviousClick = { musicViewModel.onEvent(MusicEvent.PreviousTrack) },
-                                isPlaying = musicState.isPlaying,
-                            )
-//                            MediaButtonRow(
-//                                onPlayClick = {
-//                                    isPlaying = ! isPlaying
-//                                    Log.e("Button", "Play")
-//                                },
-//                                onPauseClick = {
-//                                    isPlaying = ! isPlaying
-//                                    Log.e("Button", "Pause")
-//                                },
-//                                onNextClick = { Log.e("Button", "next") },
-//                                onPreviousClick = { Log.e("Button", "previous") },
-//                                isPlaying = isPlaying
-//                            )
 
-                            // buttons area
-                            NavigationButtonsRow(
-                                modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 8.dp, vertical = 16.dp),
-                                onSkipClick = {
-                                    if (currentPosition < exerciseList.size) {
-                                        currentPosition ++
+                            }
+
+                            AnimatedVisibility(
+                                visible = isIButtonClicked,
+                                enter = fadeIn(
+                                    animationSpec = tween(400, 100)
+                                ),
+                                exit = fadeOut(
+                                    animationSpec = tween(200, 100)
+                                )
+                            ) {
+                                Column {
+                                    // Muscle Involved Row
+                                    Row {
+                                        Text(
+                                            text = "Muscles Involved",
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                        Text(
+                                            text = exercise.muscleInvolved.toString()
+                                        )
                                     }
-                                    else if (currentPosition == exerciseList.size) {
-                                        onFinish()
-                                        Toast.makeText(context, "Hello", Toast.LENGTH_SHORT).show()
-                                    }
-                                },
-                                onPauseClick = { onPauseClick() }
-                            )
+
+
+                                    Text(
+                                        text = exercise.instructions
+                                    )
+                                }
+                            }
                         }
-
                     }
                 }
             }
         }
+    }
+}
+
+
+@Composable
+fun ExerciseInfoColumn(
+    modifier: Modifier = Modifier,
+    exercise: Exercise
+) {
+    Column {
+        // Muscle Involved Row
+        Row {
+            Text(
+                text = "Muscles Involved",
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = exercise.muscleInvolved.toString()
+            )
+        }
+
+
+        Text(
+            text = exercise.instructions
+        )
     }
 }
 
@@ -338,7 +396,6 @@ private fun Preview() {
                     .padding(top = 8.dp),
         )
     }
-
 }
 
 @Composable
