@@ -9,29 +9,19 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -48,24 +38,20 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.example.sweatout.R
-import com.example.sweatout.core.presentation.MyAppButton
-import com.example.sweatout.core.presentation.noRippleClickable
+import com.example.sweatout.exercise.domain.models.DifficultyLevel
 import com.example.sweatout.exercise.domain.models.Exercise
 import com.example.sweatout.exercise.presentation.WorkoutViewModal
 import com.example.sweatout.exercise.presentation.music.MusicEvent
 import com.example.sweatout.exercise.presentation.music.MusicViewModel
-import com.example.sweatout.exercise.presentation.workout.components.LinearCountDown
+import com.example.sweatout.exercise.presentation.workout.components.ExerciseInfoColumn
+import com.example.sweatout.exercise.presentation.workout.components.ExerciseNameRow
+import com.example.sweatout.exercise.presentation.workout.components.MediaButtonRow
+import com.example.sweatout.exercise.presentation.workout.components.NavigationButtonsRow
+import com.example.sweatout.exercise.presentation.workout.components.TimerDisplay
 import com.example.sweatout.ui.theme.SweatOutTheme
 import kotlin.random.Random
 
@@ -77,7 +63,6 @@ fun WorkoutScreen(
     viewmodel: WorkoutViewModal = hiltViewModel(),
     musicViewModel: MusicViewModel = hiltViewModel()
 ) {
-    // TODO add the i button functionality
     // Todo disabled the back button , add or change the toast for it
 
     val musicState by musicViewModel.state.collectAsState()
@@ -147,7 +132,7 @@ fun WorkoutScreen(
                     )
                 }
 
-                // timer and buttons area
+                // Control Section
                 Box(
                     modifier = Modifier
                             .fillMaxHeight()
@@ -165,6 +150,7 @@ fun WorkoutScreen(
                                 ),
                         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface),
                     ) {
+//                        Control Section
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -184,7 +170,7 @@ fun WorkoutScreen(
                                     animationSpec = tween(200, 100)
                                 )
                             ){
-                                // timer display
+                                // Timer Display, navigation buttons and music controls
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
@@ -219,7 +205,7 @@ fun WorkoutScreen(
                                         isPlaying = musicState.isPlaying,
                                     )
 
-                                    // buttons area
+                                    // Navigation Buttons Area
                                     NavigationButtonsRow(
                                         modifier = Modifier
                                                 .fillMaxWidth()
@@ -230,17 +216,14 @@ fun WorkoutScreen(
                                             }
                                             else if (currentPosition == exerciseList.size) {
                                                 onFinish()
-                                                Toast.makeText(context, "Hello", Toast.LENGTH_SHORT)
-                                                        .show()
+                                                musicViewModel.releasePlayer()
                                             }
                                         },
                                         onPauseClick = { onPauseClick() }
                                     )
                                 }
-
-
                             }
-
+//                            Exercise Information Row
                             AnimatedVisibility(
                                 visible = isIButtonClicked,
                                 enter = fadeIn(
@@ -250,23 +233,9 @@ fun WorkoutScreen(
                                     animationSpec = tween(200, 100)
                                 )
                             ) {
-                                Column {
-                                    // Muscle Involved Row
-                                    Row {
-                                        Text(
-                                            text = "Muscles Involved",
-                                            style = MaterialTheme.typography.bodyMedium
-                                        )
-                                        Text(
-                                            text = exercise.muscleInvolved.toString()
-                                        )
-                                    }
-
-
-                                    Text(
-                                        text = exercise.instructions
-                                    )
-                                }
+                                ExerciseInfoColumn(
+                                    exercise = exercise
+                                )
                             }
                         }
                     }
@@ -276,178 +245,14 @@ fun WorkoutScreen(
     }
 }
 
-
-@Composable
-fun ExerciseInfoColumn(
-    modifier: Modifier = Modifier,
-    exercise: Exercise
-) {
-    Column {
-        // Muscle Involved Row
-        Row {
-            Text(
-                text = "Muscles Involved",
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = exercise.muscleInvolved.toString()
-            )
-        }
-
-
-        Text(
-            text = exercise.instructions
-        )
-    }
-}
-
-@Composable
-fun MediaButtonRow(
-    onPlayClick: () -> Unit,
-    onPauseClick: () -> Unit,
-    onNextClick: () -> Unit,
-    onPreviousClick: () -> Unit,
-    isPlaying: Boolean,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-    ) {
-        IconButton(
-            onClick = { onPreviousClick() }
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-            )
-        }
-        IconButton(
-            onClick = {
-                if (isPlaying) onPauseClick() else onPlayClick()
-            }
-        ) {
-            Icon(
-                painter = painterResource(if (isPlaying) R.drawable.baseline_pause_24 else R.drawable.baseline_play_arrow_24),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-            )
-        }
-        IconButton(
-            onClick = { onNextClick() }
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-            )
-        }
-    }
-}
-
-@Composable
-fun ExerciseNameRow(
-    exerciseName: String,
-    onInfoClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = exerciseName,
-            style = MaterialTheme.typography.headlineSmall.copy(
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.SemiBold
-            ),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                    .padding(top = 4.dp)
-                    .weight(1f)
-        )
-        Icon(
-            painter = painterResource(R.drawable.baseline_info_outline_24),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .6f),
-            modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(20.dp)
-                    .clickable(onClick = { onInfoClick() })
-        )
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
     SweatOutTheme {
-        ExerciseNameRow(
-            exerciseName = "Arm Circles",
-            onInfoClick = {},
-            Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-        )
-    }
-}
-
-@Composable
-fun TimerDisplay(
-    modifier: Modifier = Modifier,
-    totalTime: Int,
-    cardHeight: Dp,
-    widthFraction: Float,
-    onend: () -> Unit
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-    ) {
-        Card(
-            modifier = Modifier
-                    .fillMaxWidth(widthFraction)
-                    .height(cardHeight)
-        ) {
-            LinearCountDown(totalTime = totalTime, onend = { onend() })
-        }
-    }
-}
-
-@Composable
-fun NavigationButtonsRow(
-    onSkipClick: () -> Unit,
-    onPauseClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-    ) {
-        MyAppButton(
-            onClick = { onSkipClick() },
-            buttonText = stringResource(R.string.skip),
-            buttonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            textColor = MaterialTheme.colorScheme.primaryContainer,
-            modifier = Modifier
-                    .height(50.dp)
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-                    .noRippleClickable { }
-        )
-        MyAppButton(
-            onClick = { onPauseClick() },
-            modifier = Modifier
-                    .height(50.dp)
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-                    .noRippleClickable {},
-            buttonText = stringResource(R.string.pause)
+        ExerciseInfoColumn(
+            Modifier,
+            exercise = Exercise(1, "kartik", "df", "lfjalfjalf", listOf("Cardio", "Chest", "Cardio", "Chest",
+                "Shoulder"), 45, true,45,45, DifficultyLevel.EASY, true, listOf("me", "me"))
         )
     }
 }

@@ -7,7 +7,7 @@ data class SessionResultUi(
     val calBurnedInSession: String = "0",
     val totalExercisesDone: String = "0",
     val exercisesInSession: String = "0",
-    val totalTimeInSession: String = "0 Minute",
+    val totalTimeInSession: String = "0",
     val streak: String = "0 days"
 )
 

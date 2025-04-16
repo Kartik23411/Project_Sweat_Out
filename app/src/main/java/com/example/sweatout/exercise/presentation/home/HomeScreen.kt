@@ -58,6 +58,7 @@ import com.example.sweatout.R
 import com.example.sweatout.core.presentation.RotatingCircle
 import com.example.sweatout.exercise.domain.models.DifficultyLevel
 import com.example.sweatout.exercise.presentation.WorkoutViewModal
+import com.example.sweatout.exercise.presentation.home.components.ActivityGraph
 import com.example.sweatout.exercise.presentation.home.components.DefaultBMICardContent
 import com.example.sweatout.exercise.presentation.home.components.HealthMetricCard
 import com.example.sweatout.exercise.presentation.home.components.SectionSeparationText
@@ -155,7 +156,8 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(15))
                     .padding(top = 24.dp, bottom = 16.dp)
-                    .clickable { onStartClick() })
+                    .clickable { onStartClick() }
+        )
 
         SectionSeparationText(
             textId = R.string.health_metrics,
@@ -188,7 +190,6 @@ fun HomeScreen(
                                         .weight(1f)
                                         .padding(end = if (expandedCardIndex == - 1) 8.dp else 0.dp),
                                 displayText = stringResource(R.string.cal_card),
-//                                displayValue = sessionDetails.totalCalBurned.toFloat(),
                                 displayValue = user?.totalCaloriesBurned?.toFloat() ?: 0f,
                                 displayUnit = stringResource(R.string.unit_cal),
                                 isExpanded = expandedCardIndex == 0,
@@ -196,7 +197,7 @@ fun HomeScreen(
                                     expandedCardIndex = if (expandedCardIndex == 0) - 1 else 0
                                 },
                                 displayIcon = painterResource(R.drawable.calories_svgrepo_com),
-                                cardIndex = 0  // Card 1: Expansion from bottom end
+                                cardIndex = 0
                             )
                         }
                         // Weight Card
@@ -258,7 +259,7 @@ fun HomeScreen(
                                     expandedCardIndex = if (expandedCardIndex == 3) - 1 else 3
                                 },
                                 displayIcon = painterResource(R.drawable.height),
-                                cardIndex = 3  // Card 4: Expansion from top start
+                                cardIndex = 3
                             )
                         }
                     }
@@ -266,10 +267,18 @@ fun HomeScreen(
             }
         }
 
-//        SectionSeparationText(
-//            textId = R.string.your_activity,
-//            modifier = Modifier.padding(12.dp)
-//        )
+        SectionSeparationText(
+            textId = R.string.your_activity,
+            modifier = Modifier.padding(12.dp)
+        )
+
+        ActivityGraph(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp, horizontal = 12.dp)
+                .height(200.dp)
+        )
+
         Spacer(Modifier.height(24.dp))
 
         ImageSlide(
@@ -277,14 +286,6 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .height(200.dp)
         )
-
-//        ActivityGraph(
-//            modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(vertical = 16.dp, horizontal = 12.dp)
-//                    .height(200.dp)
-//        )
-
     }
 }
 

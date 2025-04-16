@@ -12,11 +12,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +31,7 @@ import kotlin.math.abs
 
 @Composable
 fun ImageSlide(modifier: Modifier = Modifier) {
+
     val images = listOf(
         R.drawable.arm_circles_exercise_illustration,
         R.drawable.arnold_shoulder_press_exercise_illustration_spotebi,
@@ -55,23 +52,23 @@ fun ImageSlide(modifier: Modifier = Modifier) {
 
     Box(
         modifier = modifier
-                .fillMaxWidth()
-                .pointerInput(Unit) {
-                    detectHorizontalDragGestures { _, dragAmount ->
-                        coroutineScope.launch {
-                            if (dragAmount > 0) {
-                                pagerState.animateScrollToPage(
-                                    (pagerState.currentPage - 1).coerceAtLeast(0)
-                                )
-                            }
-                            else {
-                                pagerState.animateScrollToPage(
-                                    (pagerState.currentPage + 1).coerceAtMost(images.size - 1)
-                                )
-                            }
+            .fillMaxWidth()
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures { _, dragAmount ->
+                    coroutineScope.launch {
+                        if (dragAmount > 0) {
+                            pagerState.animateScrollToPage(
+                                (pagerState.currentPage - 1).coerceAtLeast(0)
+                            )
+                        }
+                        else {
+                            pagerState.animateScrollToPage(
+                                (pagerState.currentPage + 1).coerceAtMost(images.size - 1)
+                            )
                         }
                     }
-                },
+                }
+            },
         contentAlignment = Alignment.Center
     ) {
         HorizontalPager(
@@ -82,31 +79,29 @@ fun ImageSlide(modifier: Modifier = Modifier) {
         ) { page ->
             val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
             val scale = 1f - (.2f * abs(pageOffset))
-            var isLoading by remember { mutableStateOf(true) }
 
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                        .graphicsLayer {
-                            scaleX = scale
-                            scaleY = scale
-                        }
+                    .graphicsLayer {
+                        scaleX = scale
+                        scaleY = scale
+                    }
             ) {
                 Image(
                     painter = painterResource(id = images[page]),
                     contentDescription = "",
                     modifier = Modifier
-                            .size(200.dp)
-                            .border(
-                                width = .5.dp,
-                                color = Color.Gray,
-                                shape = RoundedCornerShape(10)
-                            )
-                            .clip(RoundedCornerShape(10)),
+                        .size(200.dp)
+                        .border(
+                            width = .5.dp,
+                            color = Color.Gray,
+                            shape = RoundedCornerShape(10)
+                        )
+                        .clip(RoundedCornerShape(10)),
                     contentScale = ContentScale.Crop,
                 )
             }
-
         }
     }
 }
